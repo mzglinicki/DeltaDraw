@@ -69,6 +69,10 @@ Narysuje linie pomiędzy punktami\n (100, 200) i (300, 400)</string>
 
     <string name="end_of_shape">Koniec lini</string>
 
+    <string name="credits">Aplikacja jest częścią pracy inżynierskiej:\n \'Generowanie programów dla robotó firmy ABB\'\nAutor: Marcin Zglinicki\nKontakt: mzglinicki.96@gmail.com</string>
+
+
+
     <string-array name="colors">
         <item>Czarny</item>
         <item>Zielony</item>

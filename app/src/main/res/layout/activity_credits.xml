@@ -7,27 +7,27 @@
 
     <ImageView
         android:id="@+id/deltaImage"
-        android:layout_width="180dp"
-        android:layout_height="300dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="@dimen/creditsDeltaWidth"
+        android:layout_height="@dimen/creditsDeltaHeight"
+        android:layout_marginStart="@dimen/designMargin"
+        android:layout_marginEnd="@dimen/designMargin"
         android:src="@mipmap/delta"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delta Draw"
+        android:text="@string/app_name"
         android:textSize="@dimen/headline"
         android:textColor="@color/lightTextColor"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="@dimen/creditsTitleTopMargin"
         android:layout_toEndOf="@+id/deltaImage"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="@dimen/designPadding"
         android:textSize="@dimen/body"
         android:textColor="@color/lightTextColor"
         android:lineSpacingExtra = "@dimen/body"
-        android:text="Author: Marcin Zglinicki"
+        android:text="@string/credits"
         android:layout_below="@+id/deltaImage"/>
 
 </RelativeLayout>
