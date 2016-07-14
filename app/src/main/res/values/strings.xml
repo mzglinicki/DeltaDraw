@@ -67,7 +67,7 @@
     <string name="black">Black</string>
 
     <string name="end_of_shape">End of shape</string>
-    <string name="credits">Aplikacja jest częścią pracy inżynierskiej:\n \'Generowanie kodu dla robotów firmy ABB\'\nAutor: Marcin Zglinicki\nKontakt: mzglinicki.96@gmail.com</string>
+    <string name="credits">Application is part of engineering thesis:\n \'Program generator for ABB robots\'\nAuthor: Marcin Zglinicki\nE-mail: mzglinicki.96@gmail.com</string>
 
     <string-array name="colors">
         <item>Black</item>
