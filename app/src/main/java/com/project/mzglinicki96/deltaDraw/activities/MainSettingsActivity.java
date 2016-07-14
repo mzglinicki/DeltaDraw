@@ -66,7 +66,7 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
 
         if (settingModel.getSettingId() == SettingsHelper.DELETE_ALL.ordinal()) {
             deleteAllImagesDialog();
-        } else if (settingModel.getSettingId() == SettingsHelper.DELETE_ALL.ordinal()) {
+        } else if (settingModel.getSettingId() == SettingsHelper.COLORS_AMOUNT.ordinal()) {
             setDefaultColor();
         } else {
             clearSharedPreferences();

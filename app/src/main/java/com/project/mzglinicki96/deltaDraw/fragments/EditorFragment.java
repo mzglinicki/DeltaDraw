@@ -14,6 +14,7 @@ import com.project.mzglinicki96.deltaDraw.eventBus.OnCreatePictureEvent;
 import com.pgssoft.gimbus.EventBus;
 import com.pgssoft.gimbus.Subscribe;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,10 +78,11 @@ public class EditorFragment extends FragmentParent {
         });
     }
 
-    private StringBuffer checkColorChanging(final Point point, final StringBuffer coordinatesListToPrint) {
+    private StringBuffer checkColorChanging(StringBuffer coordinatesListToPrint, Point point) {
         for (FloatingColorMenuHelper floatingColorMenuHelper : FloatingColorMenuHelper.values()) {
             if (floatingColorMenuHelper.getColorIndicator() == point.x) {
-                return coordinatesListToPrint.append(floatingColorMenuHelper.getColorId()).append("\n");
+                String color = getContext().getString(floatingColorMenuHelper.getColorId());
+                coordinatesListToPrint.append(color).append("\n");
             }
         }
         return coordinatesListToPrint;
@@ -92,23 +94,22 @@ public class EditorFragment extends FragmentParent {
         int numOfPoint = NUM_OF_POINTS_INCREMENTATOR;
 
         StringBuffer coordinatesListToPrint = new StringBuffer();
+        final List<Point> pointList = event.getCoordinatesList();
 
-        if (event.getCoordinatesList().isEmpty()) {
+        if (pointList.isEmpty()) {
             pointsHolder.setText(null);
         } else {
-            for (final Point point : event.getCoordinatesList()) {
-
+            for (final Point point : pointList) {
                 if (point.x < 0) {
                     if (point.x == Constants.END_SHAPE_SIGN) {
                         coordinatesListToPrint.append(getContext().getString(R.string.end_of_shape)).append("\n");
                         continue;
                     }
-                    coordinatesListToPrint = checkColorChanging(point, coordinatesListToPrint);
+                    coordinatesListToPrint = checkColorChanging(coordinatesListToPrint, point);
                     continue;
-                } else if (numOfPoint == NUM_OF_POINTS_INCREMENTATOR) {
+                } else if (numOfPoint == NUM_OF_POINTS_INCREMENTATOR && point == pointList.get(0)) {
                     coordinatesListToPrint.append(getContext().getString(R.string.black)).append("\n");
                 }
-
                 coordinatesListToPrint.append(Constants.POINT_SIGN).append(numOfPoint).append(" ").append(point.x).append(", ").append(point.y).append("\n");
                 numOfPoint += NUM_OF_POINTS_INCREMENTATOR;
             }
