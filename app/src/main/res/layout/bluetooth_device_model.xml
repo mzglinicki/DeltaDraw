@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bluetoothLayoutModel"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/listItem"
+    android:background="@color/pictureListBackground">
+
+    <TextView
+        android:id="@+id/bluetoothTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:padding="@dimen/designPadding"
+        android:textColor="@color/lightTextColor"
+        android:textSize="@dimen/body" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/listItemSeparator"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white" />
+
+</RelativeLayout>

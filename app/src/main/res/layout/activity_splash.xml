@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lib="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainBackground">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/splashImageMargin"
+        android:src="@mipmap/delta" />
+
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/splashHeaderMargin"
+        android:layout_marginRight="@dimen/splashHeaderMargin"
+        android:text="@string/splash_header"
+        android:textColor="@color/lightTextColor"
+        android:textSize="@dimen/name" />
+
+    <LinearLayout
+        android:layout_width="@dimen/anim_layout_width"
+        android:layout_height="@dimen/anim_layout_height"
+        android:layout_above="@+id/appTitle"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="@dimen/splashHeaderMargin">
+
+        <com.github.glomadrian.roadrunner.DeterminateRoadRunner
+            android:id="@+id/determinate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            lib:animate_on_start="true"
+            lib:movement_direction="clockwise"
+            lib:movement_loop_time="@integer/movement_loop_time"
+            lib:path_color="@color/white"
+            lib:path_data="@string/delta"
+            lib:path_original_height="@integer/delta_original_height"
+            lib:path_original_width="@integer/delta_original_width"
+            lib:stroke_width="@dimen/stroke_width" />
+
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,55 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary_gray_900</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_gray_800</item>
+        <item name="colorAccent">@color/lightGreen_A400</item>
+        <item name="android:itemBackground">@color/itemBackground</item>
+    </style>
+
+    <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabGravity">fill</item>
+        <item name="tabMaxWidth">0dp</item>
+        <item name="tabBackground">@color/tabBackGround</item>
+        <item name="tabIndicatorHeight">@dimen/tabIndicatorHeight</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:background">@color/pictureListBackground</item>
+    </style>
+
+    <style name="pictureListColumnModel">
+        <item name="android:layout_width">@dimen/column_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/listItemColor</item>
+        <item name="android:textSize">@dimen/body</item>
+    </style>
+
+    <style name="pictureListHeader">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/listItemColor</item>
+        <item name="android:textSize">@dimen/subheading</item>
+    </style>
+
+    <style name="iconStyle">
+
+        <item name="android:layout_width">@dimen/iconSize</item>
+        <item name="android:layout_height">@dimen/iconSize</item>
+        <item name="android:padding">@dimen/iconPadding</item>
+        <item name="android:background">@android:color/transparent</item>
+
+    </style>
+
+    <style name="buttonStyle">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textColor">@color/lightTextColor</item>
+
+
+    </style>
+</resources>

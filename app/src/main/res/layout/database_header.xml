@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/subtitle"
+    android:background="@color/headerBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingEnd="@dimen/endPaddingForDate"
+    android:paddingStart="@dimen/listItemStartPadding">
+
+    <TextView
+        android:id="@+id/pictureTitleField"
+        style="@style/pictureListHeader"
+        android:layout_alignParentStart="true"
+        android:text="@string/picture_name_txt" />
+
+    <TextView
+        android:id="@+id/pictureAuthorField"
+        style="@style/pictureListHeader"
+        android:layout_centerHorizontal="true"
+        android:text="@string/author_txt" />
+
+    <TextView
+        android:id="@+id/pictureDateField"
+        style="@style/pictureListHeader"
+        android:layout_alignParentEnd="true"
+        android:text="@string/date_txt" />
+</RelativeLayout>

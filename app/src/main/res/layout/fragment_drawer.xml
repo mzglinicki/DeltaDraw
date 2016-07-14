@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawerFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.project.mzglinicki96.deltaDraw.fragments.DrawerOnScreen
+        android:id="@+id/canvas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/canvasBackground">
+
+    </com.project.mzglinicki96.deltaDraw.fragments.DrawerOnScreen>
+
+    <RelativeLayout
+        android:id="@+id/fabMenuContainer"
+        android:layout_width="@dimen/menuColorContainer"
+        android:layout_height="@dimen/menuColorContainer"
+        android:layout_gravity="bottom|end">
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">Delta Draw</string>
+    <string name="splash_header">Delta draw - wersja próbna</string>
+
+    <!-- tabs -->
+    <string name="draw_tab_title">Rysuj</string>
+    <string name="edit_tab_title">Edytuj</string>
+
+    <!-- menu -->
+    <string name="menu_clear">Usuń</string>
+    <string name="menu_saved">Zapisz</string>
+    <string name="menu_share">Wyślij</string>
+    <string name="back">Cofnij</string>
+    <string name="lib_menu_settings">Ustawienia</string>
+    <string name="lib_menu_credits">O aplikacji</string>
+    <string name="lib_menu_search">Szukaj</string>
+
+    <!-- hint -->
+<string name="edit_page_hint">Lista punktów jest pusta.\n\nStwórz własny rysunek wpisując współrzędne\npunktów. Na przykład:\np10 100, 200\np20 300, 400\n\n
+Narysuje linie pomiędzy punktami\n (100, 200) i (300, 400)</string>
+    <string name="empty_lib_txt">Biblioteka rysunków jest pusta.</string>
+
+    <!-- list of pictures -->
+    <string name="author_txt">Autor</string>
+    <string name="picture_name_txt">Nazwa</string>
+    <string name="date_txt">Data</string>
+
+    <!-- buttons -->
+    <string name="set_changes_btn">Zatwierdź zmiany</string>
+    <string name="discover_new_devices">Znajdź nowe urządzenia</string>
+
+    <!-- toast, snackbars, alerts -->
+    <string name="deleted_snackbar">Usunięto</string>
+    <string name="undo">Cofnij</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Anuluj</string>
+    <string name="start_draw_title">Stwórz nowy rysunek</string>
+    <string name="start_draw_btn">Rozpocznij</string>
+    <string name="yes_btn">Tak</string>
+    <string name="no_btn">Nie</string>
+    <string name="saved_toast">Zapisano</string>
+    <string name="not_connected_toast">Niepołączono</string>
+    <string name="bt_not_support_toast">Urządzenie nie posiada bluetootha</string>
+    <string name="connected">Połączono</string>
+    <string name="device_unavailable">Urządzenie jest niedostępne</string>
+
+    <!-- alerts -->
+    <string name="close_app_dialog">Zamknąć aplikację?</string>
+    <string name="ask_for_save_changes">Zapisać zmiany?</string>
+
+    <!-- settings -->
+    <string name="settings_delete_all">Usuń wszystko</string>
+    <string name="colors_amount">Dostępne kolory</string>
+    <string name="menu_color_visibility">Widoczność menu kolorów</string>
+    <string name="default_settings">Przywróć ustawienia domyślne</string>
+    <string name="setting_select_color_title">Ustaw kolory</string>
+    <string name="deleteAllQuestion">Usunąć wszystkie rysunki?</string>
+    <string name="allDeleted">Wszystkie rysunki zostały usunięte</string>
+
+    <!-- colors -->
+    <string name="yellow">Żółty</string>
+    <string name="orange">Pomarańczowy</string>
+    <string name="red">Czerwony</string>
+    <string name="blue">Niebieski</string>
+    <string name="green">Zielony</string>
+    <string name="black">Czarny</string>
+
+    <string name="end_of_shape">Koniec lini</string>
+
+    <string-array name="colors">
+        <item>Czarny</item>
+        <item>Zielony</item>
+        <item>Niebieski</item>
+        <item>Czerwony</item>
+        <item>Pomarańczowy</item>
+        <item>Żółty</item>
+    </string-array>
+</resources>

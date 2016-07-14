@@ -1,0 +1,41 @@
+<resources>
+
+    <dimen name="designPadding">16dp</dimen>
+    <dimen name="designMargin">16dp</dimen>
+    <dimen name="subtitle">48dp</dimen>
+    <dimen name="listItem">72dp</dimen>
+
+    <dimen name="headline">24sp</dimen>
+    <dimen name="name">20sp</dimen>
+    <dimen name="subheading">16sp</dimen>
+    <dimen name="body">14sp</dimen>
+    <dimen name="column_width">100dp</dimen>
+    <dimen name="fabMargin">16dp</dimen>
+
+    <!-- Icons -->
+
+    <dimen name="iconPadding">12dp</dimen>
+    <dimen name="iconSize">48dp</dimen>
+
+    <!-- FloatingColorMenu -->
+
+    <dimen name="tabIndicatorHeight">2dp</dimen>
+    <dimen name="listItemStartPadding">@dimen/designPadding</dimen>
+    <dimen name="listItemEndPadding">@dimen/designPadding</dimen>
+    <dimen name="endPaddingForDate">40dp</dimen>
+    <dimen name="splashHeaderMargin">30dp</dimen>
+    <dimen name="splashImageMargin">16dp</dimen>
+
+    <dimen name="stroke_width">1dp</dimen>
+    <dimen name="anim_layout_width">200dp</dimen>
+    <dimen name="anim_layout_height">100dp</dimen>
+    <dimen name="progressCircle">40dp</dimen>
+
+    <dimen name="listItemSeparator">1dp</dimen>
+    <dimen name="startDrawDialogWidth">300dp</dimen>
+    <dimen name="startDrawDialogHeight">400dp</dimen>
+    <dimen name="menuColorContainer">80dp</dimen>
+    <integer name="movement_loop_time">800</integer>
+
+
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/saved"
+        android:icon="@drawable/ic_sd_storage_24dp"
+        android:title="@string/menu_saved"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/clearLastShape"
+        android:icon="@drawable/ic_undo_24dp"
+        android:title="@string/back"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/lib_menu_clear"
+        android:icon="@drawable/ic_bin_24dp"
+        android:title="@string/menu_clear"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_share_24dp"
+        android:title="@string/menu_share"
+        app:showAsAction="ifRoom"/>
+
+</menu>
+
+<!--<item-->
+<!--android:id="@+id/lib_menu_settings"-->
+<!--android:title="@string/menu_settings"-->
+<!--app:showAsAction="never"/>-->

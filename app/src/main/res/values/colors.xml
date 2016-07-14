@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="orange">#FF9800</color>
+    <color name="red">#F44336</color>
+    <color name="blue">#2196F3</color>
+    <color name="green">#4CAF50</color>
+
+    <color name="dark_blue">@android:color/holo_blue_dark</color>
+
+    <color name="colorPrimary_gray_900">#212121</color>
+    <color name="colorPrimaryDark_gray_800">#424242</color>
+    <color name="colorGray_800">#424242</color>
+    <color name="colorGray_700">#616161</color>
+    <color name="colorGray_500">#9E9E9E</color>
+    <color name="lightGreen_A400">#64DD17</color>
+    <color name="warning_A700">#D50000</color>
+
+    <color name="accent">@color/lightGreen_A400</color>
+
+    <!-- Text color -->
+    <color name="lightTextColor">@color/white</color>
+
+    <color name="menuIconColor">@color/white</color>
+    <color name="pictureListBackground">@color/colorGray_500</color>
+    <color name="canvasBackground">@color/white</color>
+    <color name="tabBackGround">@color/colorGray_700</color>
+    <color name="itemBackground">@color/white</color>
+    <color name="listItemColor">@color/lightTextColor</color>
+    <color name="headerBackground">@color/colorGray_800</color>
+    <color name="mainBackground">@color/colorGray_500</color>
+
+</resources>
+
+
