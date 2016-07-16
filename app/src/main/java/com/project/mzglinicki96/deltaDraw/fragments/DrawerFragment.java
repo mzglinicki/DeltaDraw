@@ -2,13 +2,9 @@ package com.project.mzglinicki96.deltaDraw.fragments;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.view.DragEvent;
@@ -18,15 +14,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+import com.pgssoft.gimbus.Subscribe;
 import com.project.mzglinicki96.deltaDraw.Constants;
 import com.project.mzglinicki96.deltaDraw.FloatingColorMenuHelper;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
 import com.project.mzglinicki96.deltaDraw.eventBus.OnCreatePictureEvent;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
-import com.pgssoft.gimbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +86,6 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
         int viewHeight = v.getHeight();
         int viewWidth = v.getWidth();
 
-        //TODO improve me !!!
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED:
                 closeMenu(null);
@@ -207,16 +202,12 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
         return enableButtons;
     }
 
-    private void setupOnMenuItemClickListener(final ImageView menuItem, final int colorIndicator) {
+    private void setupOnMenuItemClickListener(final ImageView menuItem, final int colorByOrdinal) {
         menuItem.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
-                drawer.setStrokeColorIndicator(colorIndicator);
-                final Drawable drawable = getResources().getDrawable(R.drawable.ic_brush_24dp, null);
-                assert drawable != null;
-                drawable.setColorFilter(FloatingColorMenuHelper.values()[colorIndicator].getColor(), PorterDuff.Mode.SRC_ATOP);
-                fabIcon.setImageDrawable(drawable);
+                drawer.setStrokeColorIndicator(colorByOrdinal);
+                drawer.setBrushColor(FloatingColorMenuHelper.values()[colorByOrdinal].getColor());
                 closeMenu(null);
             }
         });

@@ -3,10 +3,13 @@ package com.project.mzglinicki96.deltaDraw.fragments;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,6 +44,11 @@ public class DrawerOnScreen extends View {
 
     public DrawerOnScreen(final Context context, final AttributeSet attrs) {
         super(context, attrs);
+        init();
+    }
+
+    public DrawerOnScreen(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         init();
     }
 
@@ -112,7 +120,10 @@ public class DrawerOnScreen extends View {
 
         for (final FloatingColorMenuHelper floatingColorMenuHelper : FloatingColorMenuHelper.values()) {
             if (floatingColorMenuHelper.getColorIndicator() == colorIndicator) {
-                color = FloatingColorMenuHelper.values()[floatingColorMenuHelper.ordinal()].getColor();
+                color = floatingColorMenuHelper.getColor();
+                if (fabIcon != null) {
+                    setBrushColor(color);
+                }
                 break;
             }
         }
@@ -154,7 +165,7 @@ public class DrawerOnScreen extends View {
         }
     }
 
-    public void redrawCanvas(){
+    public void redrawCanvas() {
         redrawCanvas(null);
     }
 
@@ -184,7 +195,7 @@ public class DrawerOnScreen extends View {
         coordinatesList.clear();
         listOfPaths.clear();
         colorIndicator = getDefaultColorIndicator();
-        restartFABIcon();
+        setBrushColor(Color.WHITE);
         invalidate();
     }
 
@@ -199,17 +210,33 @@ public class DrawerOnScreen extends View {
                         break;
                     }
                 } catch (ArrayIndexOutOfBoundsException onLastShape) {
-                    restartFABIcon();
+                    setBrushColor(Color.WHITE);
                     break;
                 }
             }
+            changeBrushColor();
         }
         invalidate();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void restartFABIcon() {
-        final Drawable drawable = getResources().getDrawable(R.drawable.ic_brush_24dp, null);
+    private void changeBrushColor() {
+        for (int i = coordinatesList.size() - 1; i >= 0; i--) {
+            try {
+                if (coordinatesList.get(i - 1).x <= 0 && coordinatesList.get(i - 1).x != Constants.END_SHAPE_SIGN) {
+                    colorIndicator = coordinatesList.get(i - 1).x;
+                    setBrushColor(colorIndicator);
+                    break;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                setBrushColor(defaultColor);
+                break;
+            }
+        }
+    }
+
+    public void setBrushColor(int color) {
+        final Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_brush_24dp);
+        drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         fabIcon.setImageDrawable(drawable);
     }
 }

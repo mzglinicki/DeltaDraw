@@ -54,8 +54,6 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         final Intent intent = new Intent(this, DatabaseActivity.class);
         startActivity(intent);
         overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);

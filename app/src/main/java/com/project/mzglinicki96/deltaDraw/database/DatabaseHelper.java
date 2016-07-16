@@ -113,6 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         final String jsonPoints = cursor.getString(cursor.getColumnIndexOrThrow(PictureTable.COLUMN_POINTS));
         final String pictureName = cursor.getString(cursor.getColumnIndexOrThrow(PictureTable.COLUMN_NAME));
         final String pictureAuthor = cursor.getString(cursor.getColumnIndexOrThrow(PictureTable.COLUMN_AUTHOR));
+        final int pictureId = cursor.getInt(cursor.getColumnIndexOrThrow(PictureTable.COLUMN_ID));
 
         cursor.close();
 
@@ -120,6 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         bundle.putString(Constants.POINTS_IN_JASON, jsonPoints);
         bundle.putString(Constants.KEY_NAME, pictureName);
         bundle.putString(Constants.KEY_AUTHOR, pictureAuthor);
+        bundle.putInt(Constants.KEY_POSITION, pictureId);
 
         return bundle;
     }

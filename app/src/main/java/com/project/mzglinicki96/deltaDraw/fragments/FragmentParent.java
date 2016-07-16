@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.project.mzglinicki96.deltaDraw.Constants;
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
@@ -35,7 +36,7 @@ public abstract class FragmentParent extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         view = inflater.inflate(layoutId, container, false);
 
-        checkIfFromLib(getArguments());
+        getPicture(getArguments());
         init(view);
         return view;
     }
@@ -50,7 +51,16 @@ public abstract class FragmentParent extends Fragment {
         return titleId;
     }
 
-    public void getPicture(final String list) {
+    public void getPicture(final Bundle bundle) {
+
+        String list = "";
+        try {
+            list = new JSONObject(bundle.getString(Constants.POINTS_IN_JASON)).getString(Constants.KEY_LIST);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e){
+            Toast.makeText(getContext(), "NULL", Toast.LENGTH_SHORT).show();
+        }
 
         if (list != null) {
             final Pattern pattern = Pattern.compile("(\\d+)|(\\-\\d)");
@@ -61,19 +71,8 @@ public abstract class FragmentParent extends Fragment {
                 int y = Integer.parseInt(matcher.group().trim());
                 coordinatesList.add(new Point(x, y));
             }
-            GimBus.getInstance().post(new OnCreatePictureEvent(coordinatesList));
         }
-    }
-
-    private boolean checkIfFromLib(final Bundle bundle) {
-        try {
-            getPicture(new JSONObject(bundle.getString(Constants.POINTS_IN_JASON)).getString(Constants.KEY_LIST));
-        } catch (NullPointerException emptyJson) {
-            return true;
-        } catch (JSONException e) {
-            return false;
-        }
-        return false;
+        GimBus.getInstance().post(new OnCreatePictureEvent(coordinatesList));
     }
 
     public abstract boolean isSwipeable();

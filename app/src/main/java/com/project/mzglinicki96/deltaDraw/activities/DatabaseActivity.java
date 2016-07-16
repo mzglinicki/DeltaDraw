@@ -130,11 +130,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        pictureModels.add(position, model);
-                        adapter.notifyItemInserted(position);
-                        recyclerView.scrollToPosition(position);
-                        pictureToRemove.remove(model);
-                        checkIfAdapterIsEmpty();
+                        onUndoClick(model,position);
                     }
                 })
                 .setCallback(new Snackbar.Callback() {
@@ -176,6 +172,15 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         for (View item : itemsToChange) {
             item.setVisibility(item.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         }
+    }
+
+    private void onUndoClick(final PictureModel model, final int position){
+        pictureModels.add(position, model);
+        databaseHelper.insertData(model.getName(),model.getAuthor(),model.getPoints());
+        adapter.notifyItemInserted(position);
+        recyclerView.scrollToPosition(position);
+        pictureToRemove.remove(model);
+        checkIfAdapterIsEmpty();
     }
 
     private List<View> getNormalViewItems(final View view) {
@@ -321,7 +326,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
 
         if (!name.isEmpty() && !author.isEmpty()) {
             final DatabaseHelper drawDatabase = DatabaseHelper.getInstance(context);
-            drawDatabase.insertData(name, author, "0,0");
+            drawDatabase.insertData(name, author, null);
             startActivity(DrawCreatingActivity.class, drawDatabase.getLastSavedRow());
         }
     }

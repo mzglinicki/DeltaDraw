@@ -39,7 +39,8 @@ public class EditorFragment extends FragmentParent {
     protected void init(final View view) {
         pointsHolder = (EditText) view.findViewById(R.id.editTextListOfPoints);
         editCodeAcceptor = (Button) view.findViewById(R.id.editCodeAcceptor);
-        editTextListener();
+
+        setupEditCodeAcceptorListener();
     }
 
     @Override
@@ -47,13 +48,12 @@ public class EditorFragment extends FragmentParent {
         return true;
     }
 
-    private void editTextListener() {
+    private void setupEditCodeAcceptorListener() {
 
         editCodeAcceptor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 coordinatesList.clear();
-
                 int x;
                 int y;
 
@@ -69,23 +69,10 @@ public class EditorFragment extends FragmentParent {
                     }
                     coordinatesList.add(new Point(x, y));
                 }
-                if (!coordinatesList.isEmpty()) {
-                    coordinatesList.add(new Point(Constants.END_SHAPE_SIGN, Constants.END_SHAPE_SIGN));
-                }
                 GimBus.getInstance().post(new OnCreatePictureEvent(coordinatesList));
                 Toast.makeText(getContext(), R.string.saved_toast, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private StringBuffer checkColorChanging(StringBuffer coordinatesListToPrint, Point point) {
-        for (FloatingColorMenuHelper floatingColorMenuHelper : FloatingColorMenuHelper.values()) {
-            if (floatingColorMenuHelper.getColorIndicator() == point.x) {
-                String color = getContext().getString(floatingColorMenuHelper.getColorId());
-                coordinatesListToPrint.append(color).append("\n");
-            }
-        }
-        return coordinatesListToPrint;
     }
 
     @Subscribe
@@ -100,15 +87,12 @@ public class EditorFragment extends FragmentParent {
             pointsHolder.setText(null);
         } else {
             for (final Point point : pointList) {
-                if (point.x < 0) {
-                    if (point.x == Constants.END_SHAPE_SIGN) {
-                        coordinatesListToPrint.append(getContext().getString(R.string.end_of_shape)).append("\n");
-                        continue;
-                    }
-                    coordinatesListToPrint = checkColorChanging(coordinatesListToPrint, point);
+                if (point.x < 0 && point.x == Constants.END_SHAPE_SIGN) {
+                    coordinatesListToPrint.append(point.x).append(", ").append(point.y).append("\n");
                     continue;
-                } else if (numOfPoint == NUM_OF_POINTS_INCREMENTATOR && point == pointList.get(0)) {
-                    coordinatesListToPrint.append(getContext().getString(R.string.black)).append("\n");
+                } else if (point.x < 0) {
+                    coordinatesListToPrint.append(point.x).append(", ").append(point.y).append("\n");
+                    continue;
                 }
                 coordinatesListToPrint.append(Constants.POINT_SIGN).append(numOfPoint).append(" ").append(point.x).append(", ").append(point.y).append("\n");
                 numOfPoint += NUM_OF_POINTS_INCREMENTATOR;

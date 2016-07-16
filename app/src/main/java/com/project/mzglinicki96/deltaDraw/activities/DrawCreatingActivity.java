@@ -30,6 +30,7 @@ import com.pgssoft.gimbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DrawCreatingActivity extends AppCompatActivity {
@@ -37,10 +38,9 @@ public class DrawCreatingActivity extends AppCompatActivity {
     private final DatabaseHelper drawDatabase = DatabaseHelper.getInstance(this);
     private final EventBus gimBus = GimBus.getInstance();
     private List<Point> coordinatesList;
-    private List<Point> initialList;
+    private List<Point> initialList = new ArrayList<>();
 
-    private int id = 0;
-    private boolean isSaved;
+    private int rowId;
     private String name;
     private String author;
 
@@ -109,9 +109,9 @@ public class DrawCreatingActivity extends AppCompatActivity {
     private void startActivity(final Class newActivity) {
 
         final Intent intent = new Intent(DrawCreatingActivity.this, newActivity);
-        startActivity(intent);
         boolean isDatabaseActivity = newActivity.equals(DatabaseActivity.class);
-        if(isDatabaseActivity){
+        startActivity(intent);
+        if (isDatabaseActivity) {
             finish();
         }
         overridePendingTransition(isDatabaseActivity ? R.animator.trans_right_in : R.animator.trans_left_in, isDatabaseActivity ? R.animator.trans_right_out : R.animator.trans_left_out);
@@ -119,18 +119,10 @@ public class DrawCreatingActivity extends AppCompatActivity {
 
     private void checkChanges() {
 
-        try {
-            if (initialList == null && coordinatesList != null) {
-                askForSaving();
-            } else {
-                if (initialList.equals(coordinatesList) && isSaved) {
-                    startActivity(DatabaseActivity.class);
-                } else {
-                    askForSaving();
-                }
-            }
-        } catch (NullPointerException e) {
+        if (initialList.equals(coordinatesList)) {
             startActivity(DatabaseActivity.class);
+        } else {
+            askForSaving();
         }
     }
 
@@ -171,10 +163,10 @@ public class DrawCreatingActivity extends AppCompatActivity {
     }
 
     private void saved() {
-        drawDatabase.updateAllData(name, author, serializeListOfPoints(), id);
+
+        initialList.addAll(coordinatesList);
+        drawDatabase.updateAllData(name, author, serializeListOfPoints(), rowId);
         Toast.makeText(this, R.string.saved_toast, Toast.LENGTH_SHORT).show();
-        initialList = coordinatesList;
-        isSaved = true;
     }
 
     private void share() {
@@ -194,16 +186,9 @@ public class DrawCreatingActivity extends AppCompatActivity {
 
     private Bundle getExtras() {
         final Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            isSaved = true;
-            name = bundle.getString(Constants.KEY_NAME);
-            author = bundle.getString(Constants.KEY_AUTHOR);
-            id = bundle.getInt(Constants.KEY_POSITION);
-        } else {
-            isSaved = false;
-            name = getIntent().getStringExtra(Constants.KEY_NAME);
-            author = getIntent().getStringExtra(Constants.KEY_AUTHOR);
-        }
+        name = bundle.getString(Constants.KEY_NAME);
+        author = bundle.getString(Constants.KEY_AUTHOR);
+        rowId = bundle.getInt(Constants.KEY_POSITION);
         return bundle;
     }
 
@@ -218,16 +203,8 @@ public class DrawCreatingActivity extends AppCompatActivity {
         return new FragmentParent[]{drawerFragment, editorFragment};
     }
 
-    private void setInitialList(List<Point> initialList) {
-        if (isSaved) {
-            this.initialList = initialList;
-            isSaved = false;
-        }
-    }
-
     @Subscribe
     public void listOfPointsHolder(final OnCreatePictureEvent list) {
         this.coordinatesList = list.getCoordinatesList();
-        setInitialList(coordinatesList);
     }
 }
