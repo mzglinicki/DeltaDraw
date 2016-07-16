@@ -58,8 +58,7 @@ public abstract class FragmentParent extends Fragment {
             list = new JSONObject(bundle.getString(Constants.POINTS_IN_JASON)).getString(Constants.KEY_LIST);
         } catch (JSONException e) {
             e.printStackTrace();
-        } catch (NullPointerException e){
-            Toast.makeText(getContext(), "NULL", Toast.LENGTH_SHORT).show();
+        } catch (NullPointerException ignored) {
         }
 
         if (list != null) {

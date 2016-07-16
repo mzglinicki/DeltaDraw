@@ -5,29 +5,39 @@
     android:background="@color/mainBackground"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/deltaImage"
-        android:layout_width="@dimen/creditsDeltaWidth"
-        android:layout_height="@dimen/creditsDeltaHeight"
-        android:layout_marginStart="@dimen/designMargin"
-        android:layout_marginEnd="@dimen/designMargin"
-        android:src="@mipmap/delta"/>
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="@dimen/headline"
-        android:textColor="@color/lightTextColor"
-        android:layout_marginTop="@dimen/creditsTitleTopMargin"
-        android:layout_toEndOf="@+id/deltaImage"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/designPadding"
-        android:textSize="@dimen/body"
-        android:textColor="@color/lightTextColor"
-        android:lineSpacingExtra = "@dimen/body"
-        android:text="@string/credits"
-        android:layout_below="@+id/deltaImage"/>
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/deltaImage"
+            android:layout_width="@dimen/creditsDeltaWidth"
+            android:layout_height="@dimen/creditsDeltaHeight"
+            android:layout_marginStart="@dimen/designMargin"
+            android:src="@mipmap/delta" />
+
+        <TextView
+            android:id="@+id/deltaImageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/designMargin"
+            android:padding="@dimen/designPadding"
+            android:text="@string/app_name"
+            android:textColor="@color/lightTextColor"
+            android:textSize="@dimen/headline" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/designMargin"
+            android:lineSpacingExtra="@dimen/body"
+            android:padding="@dimen/designPadding"
+            android:text="@string/credits"
+            android:textColor="@color/lightTextColor"
+            android:textSize="@dimen/body" />
+
+    </LinearLayout>
 
 </RelativeLayout>
