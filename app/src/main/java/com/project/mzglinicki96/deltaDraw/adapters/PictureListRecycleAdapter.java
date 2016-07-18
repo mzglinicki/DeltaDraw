@@ -64,7 +64,7 @@ public class PictureListRecycleAdapter extends RecyclerView.Adapter<ListItemView
     }
 
     @Override
-    public void onItemDismiss(final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder) {
+    public void onItemDismiss(final RecyclerView.ViewHolder viewHolder) {
         final int position = viewHolder.getAdapterPosition();
 
         clickListener.onDeleteItem(pictureModels.get(position), position);

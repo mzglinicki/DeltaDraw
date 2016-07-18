@@ -24,8 +24,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.project.mzglinicki96.deltaDraw.adapters.ListItemTouchHelper;
 import com.project.mzglinicki96.deltaDraw.R;
+import com.project.mzglinicki96.deltaDraw.adapters.ListItemTouchHelper;
 import com.project.mzglinicki96.deltaDraw.adapters.PictureListRecycleAdapter;
 import com.project.mzglinicki96.deltaDraw.database.DatabaseHelper;
 import com.project.mzglinicki96.deltaDraw.database.PictureModel;
@@ -130,7 +130,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        onUndoClick(model,position);
+                        onUndoClick(model, position);
                     }
                 })
                 .setCallback(new Snackbar.Callback() {
@@ -174,9 +174,9 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         }
     }
 
-    private void onUndoClick(final PictureModel model, final int position){
+    private void onUndoClick(final PictureModel model, final int position) {
         pictureModels.add(position, model);
-        databaseHelper.insertData(model.getName(),model.getAuthor(),model.getPoints());
+        databaseHelper.insertData(model.getName(), model.getAuthor(), model.getPoints());
         adapter.notifyItemInserted(position);
         recyclerView.scrollToPosition(position);
         pictureToRemove.remove(model);
