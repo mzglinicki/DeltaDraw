@@ -31,6 +31,7 @@ import com.pgssoft.gimbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DrawCreatingActivity extends AppCompatActivity {
@@ -38,12 +39,12 @@ public class DrawCreatingActivity extends AppCompatActivity {
     private final DatabaseHelper drawDatabase = DatabaseHelper.getInstance(this);
     private final EventBus gimBus = GimBus.getInstance();
     private List<Point> coordinatesList;
-    private List<Point> initialList;
+    private List<Point> initialList = new ArrayList<>();
 
     private int rowId;
     private String name;
     private String author;
-    private String list;
+    private String listInJason;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -51,7 +52,6 @@ public class DrawCreatingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_draw_creating);
 
         setupUI();
-
     }
 
     @Override
@@ -117,11 +117,11 @@ public class DrawCreatingActivity extends AppCompatActivity {
 
             @Override
             public void onLoadListComplete(List<Point> coordinates) {
-                initialList = coordinates;
+                initialList.addAll(coordinates);
                 GimBus.getInstance().post(new OnCreatePictureEvent(coordinates));
             }
         });
-        pictureLoaderSupport.execute(list);
+        pictureLoaderSupport.execute(listInJason);
     }
 
     private void startActivity(final Class newActivity) {
@@ -181,8 +181,7 @@ public class DrawCreatingActivity extends AppCompatActivity {
     }
 
     private void saved() {
-
-        initialList.addAll(coordinatesList);
+        initialList = coordinatesList;
         drawDatabase.updateAllData(name, author, serializeListOfPoints(), rowId);
         Toast.makeText(this, R.string.saved_toast, Toast.LENGTH_SHORT).show();
     }
@@ -208,7 +207,7 @@ public class DrawCreatingActivity extends AppCompatActivity {
         author = bundle.getString(Constants.KEY_AUTHOR);
         rowId = bundle.getInt(Constants.KEY_POSITION);
         try {
-            list = bundle.getString(Constants.POINTS_IN_JASON);
+            listInJason = bundle.getString(Constants.POINTS_IN_JASON);
         } catch (NullPointerException ignored) {
         }
         return bundle;
