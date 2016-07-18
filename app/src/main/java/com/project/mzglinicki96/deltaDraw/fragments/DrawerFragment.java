@@ -93,8 +93,8 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
 
                 int xCord = (int) event.getX();
                 int yCord = (int) event.getY();
-                int bottomMargin = viewHeight - yCord -  (owner.getHeight()/2);
-                int rightMargin = viewWidth - xCord - (owner.getWidth()/2);
+                int bottomMargin = viewHeight - yCord - (owner.getHeight() / 2);
+                int rightMargin = viewWidth - xCord - (owner.getWidth() / 2);
 
                 layoutParams.setMargins(0, 0, rightMargin, bottomMargin);
                 owner.setLayoutParams(layoutParams);
