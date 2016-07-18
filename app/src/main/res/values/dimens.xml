@@ -35,7 +35,6 @@
     <dimen name="startDrawDialogWidth">300dp</dimen>
     <dimen name="startDrawDialogHeight">400dp</dimen>
     <dimen name="menuColorContainer">80dp</dimen>
-    <dimen name="creditsTitleTopMargin">100dp</dimen>
     <dimen name="creditsDeltaHeight">300dp</dimen>
     <dimen name="creditsDeltaWidth">180dp</dimen>
     <integer name="movement_loop_time">800</integer>

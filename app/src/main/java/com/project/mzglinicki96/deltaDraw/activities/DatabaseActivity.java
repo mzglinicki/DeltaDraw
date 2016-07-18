@@ -83,7 +83,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
     }
 
     @Override
-    public void onClick(View view, int position) {
+    public void onClick(int position) {
         startActivity(DrawCreatingActivity.class, databaseHelper.getDataFromRow(position));
     }
 
@@ -228,7 +228,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         emptyListMessage.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
-    public void setupRecyclerView() {
+    private void setupRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.pictureListRecycleView);
         assert recyclerView != null;
         recyclerView.setHasFixedSize(true);
@@ -276,7 +276,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         return filteredModelList;
     }
 
-    protected void createItemTouchHelper() {
+    private void createItemTouchHelper() {
         final ListItemTouchHelper callback = new ListItemTouchHelper(adapter, recyclerView);
         final ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);

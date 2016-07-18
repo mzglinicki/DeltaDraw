@@ -18,7 +18,7 @@ public class ListItemTouchHelper extends ItemTouchHelper.Callback {
     }
 
     public interface ItemTouchHelperAdapter {
-        void onItemDismiss(final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder);
+        void onItemDismiss(final RecyclerView.ViewHolder viewHolder);
     }
 
     @Override
@@ -40,6 +40,6 @@ public class ListItemTouchHelper extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(final RecyclerView.ViewHolder viewHolder, final int direction) {
-        mAdapter.onItemDismiss(recyclerView, viewHolder);
+        mAdapter.onItemDismiss(viewHolder);
     }
 }

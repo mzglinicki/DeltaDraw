@@ -41,7 +41,6 @@ Narysuje linie pomiędzy punktami\n (100, 200) i (300, 400)</string>
     <string name="yes_btn">Tak</string>
     <string name="no_btn">Nie</string>
     <string name="saved_toast">Zapisano</string>
-    <string name="not_connected_toast">Niepołączono</string>
     <string name="bt_not_support_toast">Urządzenie nie posiada bluetootha</string>
     <string name="connected">Połączono</string>
     <string name="device_unavailable">Urządzenie jest niedostępne</string>
@@ -66,8 +65,6 @@ Narysuje linie pomiędzy punktami\n (100, 200) i (300, 400)</string>
     <string name="blue">Niebieski</string>
     <string name="green">Zielony</string>
     <string name="black">Czarny</string>
-
-    <string name="end_of_shape">Koniec lini</string>
 
     <string name="credits">Aplikacja jest częścią pracy inżynierskiej:\n \"Generator kodu dla robotów firmy ABB\"\nAutor: Marcin Zglinicki\nKontakt: mzglinicki.96@gmail.com</string>
 

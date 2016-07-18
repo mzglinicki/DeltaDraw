@@ -1,6 +1,5 @@
 package com.project.mzglinicki96.deltaDraw.fragments;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,7 +7,6 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -165,7 +163,7 @@ public class DrawerOnScreen extends View {
         }
     }
 
-    public void redrawCanvas() {
+    private void redrawCanvas() {
         redrawCanvas(null);
     }
 

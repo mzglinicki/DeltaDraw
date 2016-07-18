@@ -69,7 +69,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsViewHolder> {
 
     public void update() {
         for (SettingModel settingModel : settingModels) {
-            settingModel.setMark(true);
+            settingModel.setMarked();
         }
         this.notifyDataSetChanged();
     }

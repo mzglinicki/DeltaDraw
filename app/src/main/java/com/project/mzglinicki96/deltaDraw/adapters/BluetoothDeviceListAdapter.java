@@ -47,11 +47,11 @@ public class BluetoothDeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
         });
         return convertView;
     }
-
-    @Override
-    public long getItemId(final int position) {
-        return super.getItemId(position);
-    }
+//
+//    @Override
+//    public long getItemId(final int position) {
+//        return super.getItemId(position);
+//    }
 
     @Override
     public BluetoothDevice getItem(final int position) {

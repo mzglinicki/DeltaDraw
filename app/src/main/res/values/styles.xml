@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary_gray_900</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_gray_800</item>
         <item name="colorAccent">@color/lightGreen_A400</item>
-        <item name="android:itemBackground">@color/itemBackground</item>
     </style>
 
     <style name="CustomTabLayout" parent="Widget.Design.TabLayout">

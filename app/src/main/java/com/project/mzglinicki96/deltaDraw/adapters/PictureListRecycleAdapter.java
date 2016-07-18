@@ -43,7 +43,7 @@ public class PictureListRecycleAdapter extends RecyclerView.Adapter<ListItemView
             @Override
             public void onClick(View v) {
                 if (clickListener != null) {
-                    clickListener.onClick(v, holder.getAdapterPosition());
+                    clickListener.onClick(holder.getAdapterPosition());
                 }
             }
         });
@@ -80,7 +80,7 @@ public class PictureListRecycleAdapter extends RecyclerView.Adapter<ListItemView
     }
 
     public interface ClickListener {
-        void onClick(final View view, final int position);
+        void onClick(final int position);
 
         void onLongClick(final View view, final PictureModel model);
 

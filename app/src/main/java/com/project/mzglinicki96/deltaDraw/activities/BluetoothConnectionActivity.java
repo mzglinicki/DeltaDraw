@@ -49,7 +49,6 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_connection);
 
-
         coordinatesList = PointListHolder.getInstance().getCoordinatesList();
         listView = (ListView) findViewById(R.id.listViewOfDevices);
         progressView = (CircularProgressView) findViewById(R.id.progress_view);

@@ -40,7 +40,6 @@
     <string name="yes_btn">Yes</string>
     <string name="no_btn">No</string>
     <string name="saved_toast">Saved</string>
-    <string name="not_connected_toast">Not connected</string>
     <string name="bt_not_support_toast">Device does not support Bluetooth</string>
     <string name="connected">Connected</string>
     <string name="device_unavailable">Device is unavailable</string>
@@ -66,7 +65,6 @@
     <string name="green">Green</string>
     <string name="black">Black</string>
 
-    <string name="end_of_shape">End of shape</string>
     <string name="credits">Application is part of engineering thesis:\n \"Program generator for ABB robots\"\nAuthor: Marcin Zglinicki\nE-mail: mzglinicki.96@gmail.com</string>
 
     <string-array name="colors">

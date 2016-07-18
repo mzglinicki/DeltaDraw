@@ -9,8 +9,8 @@ import android.graphics.Path;
 public class PathModel {
 
     private final static int STROKE_WIDTH = 5;
-    private Path path;
-    private int color;
+    private final Path path;
+    private final int color;
 
     public PathModel(Path path, int color) {
         this.path = path;

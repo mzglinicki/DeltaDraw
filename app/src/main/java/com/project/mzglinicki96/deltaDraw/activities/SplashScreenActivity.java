@@ -15,8 +15,8 @@ import com.github.glomadrian.roadrunner.DeterminateRoadRunner;
  */
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 3000;
-    DeterminateRoadRunner determinateRoadRunner;
+    private static final int SPLASH_TIME_OUT = 3000;
+    private DeterminateRoadRunner determinateRoadRunner;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -11,7 +11,7 @@ public class SettingModel {
     private final Context context;
     private final String settingTitle;
     private final int settingId;
-    private boolean checkBoxVisibility;
+    private final boolean checkBoxVisibility;
     private boolean mark;
 
     public SettingModel(final Context context, final int settingId, final String settingTitle, final boolean isCheckBoxVisible, final boolean mark) {
@@ -38,8 +38,8 @@ public class SettingModel {
         return mark;
     }
 
-    public void setMark(boolean defaultValue){
-        mark = defaultValue;
+    public void setMarked(){
+        mark = true;
     }
 
     public boolean toggleMark() {

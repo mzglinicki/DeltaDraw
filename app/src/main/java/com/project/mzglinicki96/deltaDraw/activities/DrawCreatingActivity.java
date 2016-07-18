@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.project.mzglinicki96.deltaDraw.Constants;
+import com.project.mzglinicki96.deltaDraw.PictureLoaderSupport;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.adapters.CustomViewPager;
 import com.project.mzglinicki96.deltaDraw.adapters.PagerAdapter;
@@ -30,7 +31,6 @@ import com.pgssoft.gimbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DrawCreatingActivity extends AppCompatActivity {
@@ -38,17 +38,20 @@ public class DrawCreatingActivity extends AppCompatActivity {
     private final DatabaseHelper drawDatabase = DatabaseHelper.getInstance(this);
     private final EventBus gimBus = GimBus.getInstance();
     private List<Point> coordinatesList;
-    private List<Point> initialList = new ArrayList<>();
+    private List<Point> initialList;
 
     private int rowId;
     private String name;
     private String author;
+    private String list;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_draw_creating);
+
         setupUI();
+
     }
 
     @Override
@@ -96,14 +99,29 @@ public class DrawCreatingActivity extends AppCompatActivity {
         gimBus.unregister(this);
     }
 
-    public void setupUI() {
+    private void setupUI() {
         final CustomViewPager viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         assert viewPager != null;
         viewPager.setAdapter(new PagerAdapter(this, getSupportFragmentManager(), createFragments()));
 
+        getPicture();
+
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         assert tabLayout != null;
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void getPicture() {
+
+        final PictureLoaderSupport pictureLoaderSupport = new PictureLoaderSupport(new PictureLoaderSupport.OnCompleteListener() {
+
+            @Override
+            public void onLoadListComplete(List<Point> coordinates) {
+                initialList = coordinates;
+                GimBus.getInstance().post(new OnCreatePictureEvent(coordinates));
+            }
+        });
+        pictureLoaderSupport.execute(list);
     }
 
     private void startActivity(final Class newActivity) {
@@ -189,6 +207,10 @@ public class DrawCreatingActivity extends AppCompatActivity {
         name = bundle.getString(Constants.KEY_NAME);
         author = bundle.getString(Constants.KEY_AUTHOR);
         rowId = bundle.getInt(Constants.KEY_POSITION);
+        try {
+            list = bundle.getString(Constants.POINTS_IN_JASON);
+        } catch (NullPointerException ignored) {
+        }
         return bundle;
     }
 

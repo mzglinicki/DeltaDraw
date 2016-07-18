@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/record"
     android:layout_width="match_parent"
     android:layout_height="@dimen/listItem"
@@ -28,7 +29,8 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_check_24dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/cancelChangesImageBtn"
@@ -36,7 +38,8 @@
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/acceptChangesImageBtn"
         android:src="@drawable/ic_clear_accent_24dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/pictureTitleField"

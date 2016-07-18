@@ -20,7 +20,7 @@ import java.util.Locale;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static DatabaseHelper databaseHelper = null;
+    private static DatabaseHelper databaseHelper = null;
 
     public static DatabaseHelper getInstance(final Context context){
 
@@ -44,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         PictureTable.onUpgrade(db);
     }
 
-    public boolean insertData(final String name, final String author, final String points) {
+    public void insertData(final String name, final String author, final String points) {
 
         final SQLiteDatabase db = getWritableDatabase();
 
@@ -56,10 +56,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.insert(PictureTable.TABLE_NAME, null, contentValues);
         db.close();
-        return true;
     }
 
-    public boolean updateAllData(final String name, final String author, final String points, final int rowId){
+    public void updateAllData(final String name, final String author, final String points, final int rowId){
 
         final SQLiteDatabase db = getWritableDatabase();
 
@@ -71,7 +70,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.update(PictureTable.TABLE_NAME, contentValues, PictureTable.COLUMN_ID + "=" + rowId, null);
         db.close();
-        return true;
     }
 
     public Cursor getAllData() {
@@ -162,7 +160,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return pictureModelList;
     }
 
-    public String getDate() {
+    private String getDate() {
         final Calendar calendar = Calendar.getInstance();
         final SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
         return formatter.format(calendar.getTime());

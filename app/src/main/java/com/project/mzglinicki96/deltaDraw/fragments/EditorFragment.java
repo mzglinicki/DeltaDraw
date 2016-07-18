@@ -7,7 +7,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.project.mzglinicki96.deltaDraw.Constants;
-import com.project.mzglinicki96.deltaDraw.FloatingColorMenuHelper;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
 import com.project.mzglinicki96.deltaDraw.eventBus.OnCreatePictureEvent;

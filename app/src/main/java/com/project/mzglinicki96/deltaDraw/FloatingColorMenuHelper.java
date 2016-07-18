@@ -79,9 +79,9 @@ public enum FloatingColorMenuHelper {
     public abstract int getColor();
     public abstract ImageView createImageView(final Context context);
 
-    private String colorKey;
-    private int colorIndicator;
-    private int colorId;
+    private final String colorKey;
+    private final int colorIndicator;
+    private final int colorId;
 
     FloatingColorMenuHelper(final String colorKey, final int colorIndicator, final int colorId) {
         this.colorKey = colorKey;

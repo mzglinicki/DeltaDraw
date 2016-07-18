@@ -35,7 +35,7 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
     private final static int FLOATING_COLOR_MENU_RADIUS = 200;
     private final static int MENU_INITIAL_ROTATION = 0;
     private final static int ON_MENU_OPEN_ROTATION = 45;
-    private final static int ZERO_DEEGRE_ANGLE = 0;
+    private final static int ZERO_DEGREE_ANGLE = 0;
     private final static int RIGHT_ANGLE = 90;
     private final static int STRAIGHT_ANGLE = 180;
     private final static int THREE_QUARTERS_ANGLE = 270;
@@ -43,7 +43,6 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
 
     private DrawerOnScreen drawer;
     private FloatingActionMenu actionMenu;
-    private ImageView fabIcon;
     private List<ImageView> actionImages;
     private FloatingActionButton floatingActionButton;
 
@@ -122,7 +121,7 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
 
     private FloatingActionButton createMenuMainButton(final View view) {
 
-        fabIcon = new ImageView(getContext());
+        final ImageView fabIcon = new ImageView(getContext());
         fabIcon.setImageResource(R.drawable.ic_brush_24dp);
         drawer.setFABIcon(fabIcon);
 
@@ -259,7 +258,7 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
         int halfOfScreenWidth = viewWidth / 2;
 
         if (xCord < halfOfScreenWidth && yCord < halfOfScreenHeight) {
-            startAngle = ZERO_DEEGRE_ANGLE;
+            startAngle = ZERO_DEGREE_ANGLE;
             endAngle = RIGHT_ANGLE;
         } else if (xCord > halfOfScreenWidth && yCord < halfOfScreenHeight) {
             startAngle = RIGHT_ANGLE;

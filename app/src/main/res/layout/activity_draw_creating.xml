@@ -8,12 +8,12 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/sliding_tabs"
-        android:layout_width="match_parent"
         style="@style/CustomTabLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="@color/lightTextColor"
+        app:tabMode="fixed"
         app:tabSelectedTextColor="@color/lightTextColor"
-        app:tabMode="fixed" />
+        app:tabTextColor="@color/lightTextColor" />
 
     <com.project.mzglinicki96.deltaDraw.adapters.CustomViewPager
         android:id="@+id/viewpager"

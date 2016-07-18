@@ -115,7 +115,7 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
-        settingModels.get(SettingsHelper.COLOR_MENU_VISIBILITY.ordinal()).setMark(true);
+        settingModels.get(SettingsHelper.COLOR_MENU_VISIBILITY.ordinal()).setMarked();
         adapter.update();
     }
 
