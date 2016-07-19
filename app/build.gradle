@@ -5,7 +5,8 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.example.mzglinicki96.tablayout"
+        vectorDrawables.useSupportLibrary = true
+        applicationId "com.project.mzglinicki96.deltaDraw"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1

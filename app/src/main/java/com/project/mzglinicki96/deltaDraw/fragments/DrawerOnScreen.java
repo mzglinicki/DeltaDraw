@@ -7,6 +7,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -233,8 +234,9 @@ public class DrawerOnScreen extends View {
     }
 
     public void setBrushColor(int color) {
-        final Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_brush_24dp);
-        drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-        fabIcon.setImageDrawable(drawable);
+        final VectorDrawableCompat drawableCompat = VectorDrawableCompat.create(getResources(), R.drawable.ic_brush_24dp, getContext().getTheme());
+        assert drawableCompat != null;
+        drawableCompat.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        fabIcon.setImageDrawable(drawableCompat);
     }
 }

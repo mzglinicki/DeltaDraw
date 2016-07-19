@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.util.DisplayMetrics;
 import android.view.DragEvent;
 import android.view.View;
@@ -122,7 +123,8 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
     private FloatingActionButton createMenuMainButton(final View view) {
 
         final ImageView fabIcon = new ImageView(getContext());
-        fabIcon.setImageResource(R.drawable.ic_brush_24dp);
+        VectorDrawableCompat drawableCompat = VectorDrawableCompat.create(getResources(), R.drawable.ic_brush_24dp, getContext().getTheme());
+        fabIcon.setImageDrawable(drawableCompat);
         drawer.setFABIcon(fabIcon);
 
         final FloatingActionButton floatingActionButton = new FloatingActionButton.Builder(getActivity())

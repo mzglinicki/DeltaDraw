@@ -5,31 +5,26 @@
 
     <item
         android:id="@+id/saved"
-        android:icon="@drawable/ic_sd_storage_24dp"
         android:title="@string/menu_saved"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        app:srcCompat="@drawable/ic_sd_storage_24dp" />
 
     <item
         android:id="@+id/clearLastShape"
-        android:icon="@drawable/ic_undo_24dp"
         android:title="@string/back"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        app:srcCompat="@drawable/ic_undo_24dp" />
 
     <item
         android:id="@+id/lib_menu_clear"
-        android:icon="@drawable/ic_bin_24dp"
         android:title="@string/menu_clear"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:srcCompat="@drawable/ic_bin_24dp" />
 
     <item
         android:id="@+id/share"
-        android:icon="@drawable/ic_share_24dp"
         android:title="@string/menu_share"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        app:srcCompat="@drawable/ic_share_24dp" />
 
 </menu>
-
-<!--<item-->
-<!--android:id="@+id/lib_menu_settings"-->
-<!--android:title="@string/menu_settings"-->
-<!--app:showAsAction="never"/>-->
