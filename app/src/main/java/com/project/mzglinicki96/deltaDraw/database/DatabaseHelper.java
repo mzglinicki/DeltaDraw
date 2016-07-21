@@ -20,17 +20,7 @@ import java.util.Locale;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static DatabaseHelper databaseHelper = null;
-
-    public static DatabaseHelper getInstance(final Context context){
-
-        if(databaseHelper == null){
-            databaseHelper = new DatabaseHelper(context);
-        }
-        return databaseHelper;
-    }
-
-    private DatabaseHelper(final Context context) {
+    public DatabaseHelper(final Context context) {
         super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
     }
 

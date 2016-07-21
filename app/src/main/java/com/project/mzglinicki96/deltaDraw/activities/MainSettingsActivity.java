@@ -1,6 +1,5 @@
 package com.project.mzglinicki96.deltaDraw.activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,13 +22,18 @@ import com.project.mzglinicki96.deltaDraw.database.DatabaseHelper;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by mzglinicki.96 on 04.07.2016.
  */
 public class MainSettingsActivity extends AppCompatActivity implements SettingsAdapter.ClickListener {
 
-    private final DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
-    private final SettingsManager settingsManager = SettingsManager.getInstance(this);
+    @Inject
+    DatabaseHelper databaseHelper;
+    @Inject
+    SharedPreferences sharedPreferences;
+
     private SettingsAdapter adapter;
     private List<SettingModel> settingModels;
 
@@ -38,7 +42,9 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        settingModels = settingsManager.getListOfSettings();
+        ((MyApplication) getApplication()).getComponent().inject(this);
+
+        settingModels = SettingsManager.getInstance(this).getListOfSettings();
         adapter = new SettingsAdapter(this, settingModels, this);
 
         setupRecycleView();
@@ -79,7 +85,6 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
 
     private void setDefaultColor() {
 
-        final SharedPreferences sharedPreferences = getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_APPEND);
         boolean isBlackEnable = sharedPreferences.getBoolean(Constants.BLACK_COLOR_KEY, true);
         boolean isGreenEnable = sharedPreferences.getBoolean(Constants.GREEN_COLOR_KEY, true);
         boolean isBlueEnable = sharedPreferences.getBoolean(Constants.BLUE_COLOR_KEY, true);
@@ -112,10 +117,7 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
     }
 
     private void clearSharedPreferences() {
-        final SharedPreferences sharedPreferences = getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
+        sharedPreferences.edit().clear().apply();
         settingModels.get(SettingsHelper.COLOR_MENU_VISIBILITY.ordinal()).setMarked();
         adapter.update();
     }

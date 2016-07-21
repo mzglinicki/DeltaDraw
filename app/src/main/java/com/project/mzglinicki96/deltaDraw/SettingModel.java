@@ -3,6 +3,10 @@ package com.project.mzglinicki96.deltaDraw;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.project.mzglinicki96.deltaDraw.activities.MyApplication;
+
+import javax.inject.Inject;
+
 /**
  * Created by mzglinicki.96 on 08.07.2016.
  */
@@ -47,10 +51,7 @@ public class SettingModel {
         mark = !mark;
 
         final SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(Constants.COLOR_MENU_VISIBILITY,mark);
-        editor.apply();
-
+        sharedPreferences.edit().putBoolean(Constants.COLOR_MENU_VISIBILITY,mark).apply();
         return mark;
     }
 }

@@ -3,7 +3,6 @@ package com.project.mzglinicki96.deltaDraw.fragments;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.ClipData;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.graphics.drawable.VectorDrawableCompat;
@@ -21,6 +20,7 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.pgssoft.gimbus.Subscribe;
 import com.project.mzglinicki96.deltaDraw.Constants;
 import com.project.mzglinicki96.deltaDraw.FloatingColorMenuHelper;
+import com.project.mzglinicki96.deltaDraw.activities.MyApplication;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
 import com.project.mzglinicki96.deltaDraw.eventBus.OnCreatePictureEvent;
@@ -28,10 +28,15 @@ import com.project.mzglinicki96.deltaDraw.eventBus.OnCreatePictureEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by mzglinicki.96 on 21.03.2016.
  */
 public class DrawerFragment extends FragmentParent implements View.OnDragListener {
+
+    @Inject
+    SharedPreferences sharedPreferences;
 
     private final static int FLOATING_COLOR_MENU_RADIUS = 200;
     private final static int MENU_INITIAL_ROTATION = 0;
@@ -59,11 +64,9 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
     protected void init(final View view) {
         drawer = (DrawerOnScreen) view.findViewById(R.id.canvas);
         view.findViewById(R.id.drawerFragment).setOnDragListener(this);
+        ((MyApplication) getActivity().getApplication()).getComponent().inject(this);
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_APPEND);
-        boolean editor = sharedPreferences.getBoolean(Constants.COLOR_MENU_VISIBILITY, true);
-
-        if (editor) {
+        if(sharedPreferences.getBoolean(Constants.COLOR_MENU_VISIBILITY, true)){
             createFloatingColorChangeMenu(view, STRAIGHT_ANGLE, THREE_QUARTERS_ANGLE);
         }
     }
@@ -186,8 +189,6 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
 
         List<SubActionButton> enableButtons = getColors();
         final List<Boolean> listOfEnableColors = new ArrayList<>();
-        final SharedPreferences sharedPreferences = getContext().getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_APPEND);
-
         listOfEnableColors.add(sharedPreferences.getBoolean(Constants.BLACK_COLOR_KEY, true));
         listOfEnableColors.add(sharedPreferences.getBoolean(Constants.GREEN_COLOR_KEY, true));
         listOfEnableColors.add(sharedPreferences.getBoolean(Constants.BLUE_COLOR_KEY, true));

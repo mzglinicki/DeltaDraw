@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by mzglinicki.96 on 10.07.2016.
  */

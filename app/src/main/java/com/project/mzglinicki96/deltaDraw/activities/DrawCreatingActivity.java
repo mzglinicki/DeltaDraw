@@ -34,9 +34,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class DrawCreatingActivity extends AppCompatActivity {
 
-    private final DatabaseHelper drawDatabase = DatabaseHelper.getInstance(this);
+    @Inject
+    DatabaseHelper databaseHelper;
+
     private final EventBus gimBus = GimBus.getInstance();
     private List<Point> coordinatesList;
     private List<Point> initialList = new ArrayList<>();
@@ -50,7 +54,7 @@ public class DrawCreatingActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw_creating);
-
+        ((MyApplication) getApplication()).getComponent().inject(this);
         setupUI();
     }
 
@@ -182,7 +186,7 @@ public class DrawCreatingActivity extends AppCompatActivity {
 
     private void saved() {
         initialList = coordinatesList;
-        drawDatabase.updateAllData(name, author, serializeListOfPoints(), rowId);
+        databaseHelper.updateAllData(name, author, serializeListOfPoints(), rowId);
         Toast.makeText(this, R.string.saved_toast, Toast.LENGTH_SHORT).show();
     }
 

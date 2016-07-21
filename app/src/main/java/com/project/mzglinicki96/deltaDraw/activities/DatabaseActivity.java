@@ -33,12 +33,16 @@ import com.project.mzglinicki96.deltaDraw.database.PictureModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by mzglinicki.96 on 27.03.2016.
  */
 public class DatabaseActivity extends AppCompatActivity implements PictureListRecycleAdapter.ClickListener, SearchView.OnQueryTextListener {
 
-    private final DatabaseHelper databaseHelper = DatabaseHelper.getInstance(this);
+    @Inject
+    DatabaseHelper databaseHelper;
+
     private PictureListRecycleAdapter adapter;
     private RecyclerView recyclerView;
     private List<PictureModel> pictureModels;
@@ -52,6 +56,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MyApplication)getApplication()).getComponent().inject(this);
         createNewScreen();
     }
 
@@ -325,9 +330,8 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         final String author = pictureAuthor.getText().toString();
 
         if (!name.isEmpty() && !author.isEmpty()) {
-            final DatabaseHelper drawDatabase = DatabaseHelper.getInstance(context);
-            drawDatabase.insertData(name, author, null);
-            startActivity(DrawCreatingActivity.class, drawDatabase.getLastSavedRow());
+            databaseHelper.insertData(name, author, null);
+            startActivity(DrawCreatingActivity.class, databaseHelper.getLastSavedRow());
         }
     }
 }
