@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import com.project.mzglinicki96.deltaDraw.Constants;
 import com.project.mzglinicki96.deltaDraw.FloatingColorMenuHelper;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.SettingModel;
@@ -24,6 +23,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by mzglinicki.96 on 04.07.2016.
  */
@@ -33,6 +35,8 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
     DatabaseHelper databaseHelper;
     @Inject
     SharedPreferences sharedPreferences;
+    @Bind(R.id.settingsListRecycleView)
+    RecyclerView recyclerView;
 
     private SettingsAdapter adapter;
     private List<SettingModel> settingModels;
@@ -41,7 +45,7 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
+        ButterKnife.bind(this);
         ((MyApplication) getApplication()).getComponent().inject(this);
 
         settingModels = SettingsManager.getInstance(this).getListOfSettings();
@@ -51,8 +55,6 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
     }
 
     private void setupRecycleView() {
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.settingsListRecycleView);
-        assert recyclerView != null;
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -85,23 +87,15 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
 
     private void setDefaultColor() {
 
-        boolean isBlackEnable = sharedPreferences.getBoolean(Constants.BLACK_COLOR_KEY, true);
-        boolean isGreenEnable = sharedPreferences.getBoolean(Constants.GREEN_COLOR_KEY, true);
-        boolean isBlueEnable = sharedPreferences.getBoolean(Constants.BLUE_COLOR_KEY, true);
-        boolean isRedEnable = sharedPreferences.getBoolean(Constants.RED_COLOR_KEY, true);
-        boolean isOrangeEnable = sharedPreferences.getBoolean(Constants.ORANGE_COLOR_KEY, true);
-        boolean isYellowEnable = sharedPreferences.getBoolean(Constants.YELLOW_COLOR_KEY, true);
-
         final String arrayOfColors[] = getResources().getStringArray(R.array.colors);
-        boolean isColorChecked[] = {isBlackEnable, isGreenEnable, isBlueEnable, isRedEnable, isOrangeEnable, isYellowEnable};
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.setting_select_color_title))
                 .setCancelable(false)
-                .setMultiChoiceItems(arrayOfColors, isColorChecked, new DialogInterface.OnMultiChoiceClickListener() {
+                .setMultiChoiceItems(arrayOfColors, isColorChecked(), new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        final SharedPreferences.Editor editor = sharedPreferences.edit();
 
                         for (final FloatingColorMenuHelper floatingColorMenuHelper : FloatingColorMenuHelper.values()) {
                             if (which == floatingColorMenuHelper.ordinal()) {
@@ -111,9 +105,22 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
                         editor.apply();
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), null);
-        builder.create();
-        builder.show();
+                .setPositiveButton(getString(R.string.ok), null)
+                .create()
+                .show();
+    }
+
+    private boolean[] isColorChecked() {
+        final boolean isColorChecked[] = new boolean[FloatingColorMenuHelper.values().length];
+
+        for (FloatingColorMenuHelper floatingColorMenuHelper : FloatingColorMenuHelper.values()) {
+            isColorChecked[floatingColorMenuHelper.ordinal()] = getSharedPreferences(floatingColorMenuHelper.getColorKey());
+        }
+        return isColorChecked;
+    }
+
+    private boolean getSharedPreferences(String colorKey) {
+        return sharedPreferences.getBoolean(colorKey, true);
     }
 
     private void clearSharedPreferences() {
@@ -134,8 +141,8 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
                         Toast.makeText(MainSettingsActivity.this, R.string.allDeleted, Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setNegativeButton(R.string.no_btn, null);
-        final AlertDialog alert = builder.create();
-        alert.show();
+                .setNegativeButton(R.string.no_btn, null)
+                .create()
+                .show();
     }
 }

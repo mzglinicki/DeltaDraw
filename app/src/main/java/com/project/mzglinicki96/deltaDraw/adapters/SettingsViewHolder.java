@@ -7,18 +7,22 @@ import android.widget.TextView;
 
 import com.project.mzglinicki96.deltaDraw.R;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by mzglinicki.96 on 08.07.2016.
  */
 public class SettingsViewHolder extends RecyclerView.ViewHolder {
 
-    private final TextView settingTitle;
-    private final CheckBox checkBox;
+    @Bind(R.id.settingTitleText)
+    TextView settingTitle;
+    @Bind(R.id.settingCheckbox)
+    CheckBox checkBox;
 
     public SettingsViewHolder(final View itemView) {
         super(itemView);
-        this.settingTitle = (TextView) itemView.findViewById(R.id.settingTitleText);
-        this.checkBox = (CheckBox) itemView.findViewById(R.id.settingCheckbox);
+        ButterKnife.bind(this, itemView);
     }
 
     public TextView getSettingTitle() {

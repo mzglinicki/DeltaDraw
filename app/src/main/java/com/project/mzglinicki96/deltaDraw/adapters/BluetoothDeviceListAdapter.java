@@ -20,7 +20,7 @@ public class BluetoothDeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
     private final List<BluetoothDevice> listOfDevices;
     private final ClickListener clickListener;
 
-    public BluetoothDeviceListAdapter(final Context context, final List<BluetoothDevice> listOfDevices,ClickListener clickListener) {
+    public BluetoothDeviceListAdapter(final Context context, final List<BluetoothDevice> listOfDevices, ClickListener clickListener) {
         super(context, -1, listOfDevices);
         this.listOfDevices = listOfDevices;
         this.clickListener = clickListener;
@@ -30,35 +30,37 @@ public class BluetoothDeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
     public View getView(final int position, View convertView, final ViewGroup parent) {
 
         final BluetoothDevice device = listOfDevices.get(position);
+        BluetoothViewHolder holder;
 
-        if (convertView == null) {
+        if (convertView != null) {
+            holder = (BluetoothViewHolder) convertView.getTag();
+        } else {
             final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.bluetooth_device_model, parent, false);
+            holder = new BluetoothViewHolder(convertView);
+            convertView.setTag(holder);
         }
-        final TextView bluetoothTitleText = (TextView) convertView.findViewById(R.id.bluetoothTitleText);
-        bluetoothTitleText.setText(device.getName());
-        bluetoothTitleText.setOnClickListener(new View.OnClickListener() {
+
+        final TextView deviceTitle = holder.getBluetoothTitleText();
+        deviceTitle.setText(device.getName());
+
+        deviceTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(clickListener != null){
+                if (clickListener != null) {
                     clickListener.onClick(position);
                 }
             }
         });
         return convertView;
     }
-//
-//    @Override
-//    public long getItemId(final int position) {
-//        return super.getItemId(position);
-//    }
 
     @Override
     public BluetoothDevice getItem(final int position) {
         return listOfDevices.get(position);
     }
 
-    public interface ClickListener{
+    public interface ClickListener {
         void onClick(final int position);
     }
 }

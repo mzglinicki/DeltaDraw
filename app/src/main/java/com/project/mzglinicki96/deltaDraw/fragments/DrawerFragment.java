@@ -30,6 +30,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by mzglinicki.96 on 21.03.2016.
  */
@@ -37,6 +40,11 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
 
     @Inject
     SharedPreferences sharedPreferences;
+    @Bind(R.id.canvas)
+    DrawerOnScreen drawer;
+    @Bind(R.id.fabMenuContainer)
+    RelativeLayout container;
+
 
     private final static int FLOATING_COLOR_MENU_RADIUS = 200;
     private final static int MENU_INITIAL_ROTATION = 0;
@@ -47,7 +55,6 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
     private final static int THREE_QUARTERS_ANGLE = 270;
     private final static int FULL_ANGLE = 360;
 
-    private DrawerOnScreen drawer;
     private FloatingActionMenu actionMenu;
     private List<ImageView> actionImages;
     private FloatingActionButton floatingActionButton;
@@ -62,12 +69,12 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
 
     @Override
     protected void init(final View view) {
-        drawer = (DrawerOnScreen) view.findViewById(R.id.canvas);
-        view.findViewById(R.id.drawerFragment).setOnDragListener(this);
+        view.setOnDragListener(this);
+        ButterKnife.bind(this, view);
         ((MyApplication) getActivity().getApplication()).getComponent().inject(this);
 
         if(sharedPreferences.getBoolean(Constants.COLOR_MENU_VISIBILITY, true)){
-            createFloatingColorChangeMenu(view, STRAIGHT_ANGLE, THREE_QUARTERS_ANGLE);
+            createFloatingColorChangeMenu(STRAIGHT_ANGLE, THREE_QUARTERS_ANGLE);
         }
     }
 
@@ -104,7 +111,7 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
                 owner.setLayoutParams(layoutParams);
                 menuButton.setVisibility(View.VISIBLE);
 
-                setMenuOrientation(xCord, yCord, viewWidth, viewHeight, menuButton);
+                setMenuOrientation(xCord, yCord, viewWidth, viewHeight);
                 break;
             default:
                 break;
@@ -112,10 +119,10 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
         return true;
     }
 
-    private void createFloatingColorChangeMenu(View view, int startAngle, int endAngle) {
+    private void createFloatingColorChangeMenu(int startAngle, int endAngle) {
 
         if (floatingActionButton == null) {
-            floatingActionButton = createMenuMainButton(view);
+            floatingActionButton = createMenuMainButton();
             setOnFABLongClickListener(floatingActionButton);
         }
         actionMenu = createFloatingActionMenu(floatingActionButton, startAngle, endAngle);
@@ -123,10 +130,10 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
         setupOnMenuClickListener();
     }
 
-    private FloatingActionButton createMenuMainButton(final View view) {
+    private FloatingActionButton createMenuMainButton() {
 
         final ImageView fabIcon = new ImageView(getContext());
-        VectorDrawableCompat drawableCompat = VectorDrawableCompat.create(getResources(), R.drawable.ic_brush_24dp, getContext().getTheme());
+        final VectorDrawableCompat drawableCompat = VectorDrawableCompat.create(getResources(), R.drawable.ic_brush_24dp, getContext().getTheme());
         fabIcon.setImageDrawable(drawableCompat);
         drawer.setFABIcon(fabIcon);
 
@@ -135,15 +142,14 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
                 .setTheme(FloatingActionButton.THEME_DARK)
                 .build();
 
-        setupFABOnlyOnCurrentView(floatingActionButton, view);
+        setupFABOnlyOnCurrentView(floatingActionButton);
         return floatingActionButton;
     }
 
-    private void setupFABOnlyOnCurrentView(final FloatingActionButton floatingActionButton, final View view) {
+    private void setupFABOnlyOnCurrentView(final FloatingActionButton floatingActionButton) {
         final ViewGroup owner = (ViewGroup) floatingActionButton.getParent();
         owner.removeView(floatingActionButton);
 
-        final RelativeLayout container = (RelativeLayout) view.findViewById(R.id.fabMenuContainer);
         container.addView(floatingActionButton);
     }
 
@@ -187,14 +193,12 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
 
     private List<SubActionButton> checkColorAmountSettings() {
 
-        List<SubActionButton> enableButtons = getColors();
+        final List<SubActionButton> enableButtons = getColors();
         final List<Boolean> listOfEnableColors = new ArrayList<>();
-        listOfEnableColors.add(sharedPreferences.getBoolean(Constants.BLACK_COLOR_KEY, true));
-        listOfEnableColors.add(sharedPreferences.getBoolean(Constants.GREEN_COLOR_KEY, true));
-        listOfEnableColors.add(sharedPreferences.getBoolean(Constants.BLUE_COLOR_KEY, true));
-        listOfEnableColors.add(sharedPreferences.getBoolean(Constants.RED_COLOR_KEY, true));
-        listOfEnableColors.add(sharedPreferences.getBoolean(Constants.ORANGE_COLOR_KEY, true));
-        listOfEnableColors.add(sharedPreferences.getBoolean(Constants.YELLOW_COLOR_KEY, true));
+
+        for (FloatingColorMenuHelper floatingColorMenuHelper : FloatingColorMenuHelper.values()) {
+            listOfEnableColors.add(getSharedPreferences(floatingColorMenuHelper.getColorKey()));
+        }
 
         for (int i = listOfEnableColors.size() - 1; i >= 0; i--) {
             if (!listOfEnableColors.get(i)) {
@@ -202,6 +206,10 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
             }
         }
         return enableButtons;
+    }
+
+    private boolean getSharedPreferences(String color){
+        return sharedPreferences.getBoolean(color, true);
     }
 
     private void setupOnMenuItemClickListener(final ImageView menuItem, final int colorByOrdinal) {
@@ -238,7 +246,6 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
     }
 
     private void setOnFABLongClickListener(final FloatingActionButton floatingActionButton) {
-
         floatingActionButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -253,7 +260,7 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
         });
     }
 
-    private void setMenuOrientation(final int xCord, final int yCord, final int viewWidth, final int viewHeight, final View view) {
+    private void setMenuOrientation(final int xCord, final int yCord, final int viewWidth, final int viewHeight) {
 
         int startAngle = STRAIGHT_ANGLE;
         int endAngle = THREE_QUARTERS_ANGLE;
@@ -273,7 +280,7 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
             startAngle = THREE_QUARTERS_ANGLE;
             endAngle = FULL_ANGLE;
         }
-        createFloatingColorChangeMenu(view, startAngle, endAngle);
+        createFloatingColorChangeMenu(startAngle, endAngle);
     }
 
     @Subscribe

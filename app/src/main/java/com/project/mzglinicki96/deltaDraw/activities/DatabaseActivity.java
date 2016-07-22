@@ -19,13 +19,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.project.mzglinicki96.deltaDraw.R;
-import com.project.mzglinicki96.deltaDraw.adapters.PictureListTouchHelper;
 import com.project.mzglinicki96.deltaDraw.adapters.PictureListRecycleAdapter;
+import com.project.mzglinicki96.deltaDraw.adapters.PictureListTouchHelper;
 import com.project.mzglinicki96.deltaDraw.adapters.PictureListViewHolder;
 import com.project.mzglinicki96.deltaDraw.database.DatabaseHelper;
 import com.project.mzglinicki96.deltaDraw.database.PictureModel;
@@ -153,6 +151,11 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         closeApplication();
     }
 
+    @OnClick(R.id.floatingButton)
+    public void onFABClick() {
+        showFloatingBtnAlert(getString(R.string.start_draw_title), DatabaseActivity.this);
+    }
+
     public void onAcceptChangesClick(final PictureModel model, final PictureListViewHolder holder) {
 
         holder.getAcceptChangesImageBtn().setOnClickListener(new View.OnClickListener() {
@@ -177,11 +180,6 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
                 changeVisibility(holder.getListViewItems());
             }
         });
-    }
-
-    @OnClick(R.id.floatingButton)
-    public void onFABClick() {
-        showFloatingBtnAlert(getString(R.string.start_draw_title), DatabaseActivity.this);
     }
 
     private void changeVisibility(final List<View> listViewItems) {
@@ -269,17 +267,17 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
                         System.exit(0);
                     }
                 })
-                .setNegativeButton(R.string.no_btn, null);
-        AlertDialog alert = builder.create();
-        alert.show();
+                .setNegativeButton(R.string.no_btn, null)
+                .create()
+                .show();
     }
 
     private void showFloatingBtnAlert(final String message, final Context context) {
 
         final View view = LayoutInflater.from(context).inflate(R.layout.new_picture_dialog, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setMessage(message)
+        builder.setMessage(message)
                 .setView(view)
                 .setPositiveButton(R.string.start_draw_btn, new DialogInterface.OnClickListener() {
                     @Override
@@ -288,9 +286,9 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
-                .setCancelable(false);
-        final AlertDialog alert = builder.create();
-        alert.show();
+                .setCancelable(false)
+                .create()
+                .show();
     }
 
     private void startDraw(View view) {

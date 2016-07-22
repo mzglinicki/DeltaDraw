@@ -12,21 +12,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.pgssoft.gimbus.Subscribe;
 import com.project.mzglinicki96.deltaDraw.Constants;
 import com.project.mzglinicki96.deltaDraw.PictureLoaderSupport;
+import com.project.mzglinicki96.deltaDraw.PointListHolder;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.adapters.CustomViewPager;
 import com.project.mzglinicki96.deltaDraw.adapters.PagerAdapter;
 import com.project.mzglinicki96.deltaDraw.database.DatabaseHelper;
-import com.project.mzglinicki96.deltaDraw.PointListHolder;
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
 import com.project.mzglinicki96.deltaDraw.eventBus.OnCreatePictureEvent;
 import com.project.mzglinicki96.deltaDraw.fragments.DrawerFragment;
 import com.project.mzglinicki96.deltaDraw.fragments.DrawerOnScreen;
 import com.project.mzglinicki96.deltaDraw.fragments.EditorFragment;
 import com.project.mzglinicki96.deltaDraw.fragments.FragmentParent;
-import com.pgssoft.gimbus.EventBus;
-import com.pgssoft.gimbus.Subscribe;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,10 +35,17 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class DrawCreatingActivity extends AppCompatActivity {
 
     @Inject
     DatabaseHelper databaseHelper;
+    @Bind(R.id.viewpager)
+    CustomViewPager viewPager;
+    @Bind(R.id.sliding_tabs)
+    TabLayout tabLayout;
 
     private List<Point> coordinatesList;
     private List<Point> initialList = new ArrayList<>();
@@ -53,6 +59,7 @@ public class DrawCreatingActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw_creating);
+        ButterKnife.bind(this);
         ((MyApplication) getApplication()).getComponent().inject(this);
         setupUI();
     }
@@ -103,14 +110,8 @@ public class DrawCreatingActivity extends AppCompatActivity {
     }
 
     private void setupUI() {
-        final CustomViewPager viewPager = (CustomViewPager) findViewById(R.id.viewpager);
-        assert viewPager != null;
         viewPager.setAdapter(new PagerAdapter(this, getSupportFragmentManager(), createFragments()));
-
         getPicture();
-
-        final TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        assert tabLayout != null;
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -164,9 +165,9 @@ public class DrawCreatingActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         startActivity(DatabaseActivity.class);
                     }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+                })
+                .create()
+                .show();
     }
 
     private void clear() {

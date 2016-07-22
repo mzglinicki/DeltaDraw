@@ -10,21 +10,24 @@ import android.view.View;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.github.glomadrian.roadrunner.DeterminateRoadRunner;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by marcin on 12.05.16.
  */
 public class SplashScreenActivity extends AppCompatActivity {
 
+    @Bind(R.id.determinate)
+    DeterminateRoadRunner determinateRoadRunner;
+
     private static final int SPLASH_TIME_OUT = 3000;
-    private DeterminateRoadRunner determinateRoadRunner;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        determinateRoadRunner = (DeterminateRoadRunner) findViewById(R.id.determinate);
-        assert determinateRoadRunner != null;
+        ButterKnife.bind(this);
         determinateRoadRunner.buildDrawingCache();
 
         new Handler().postDelayed(new Runnable() {

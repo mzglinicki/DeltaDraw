@@ -11,53 +11,54 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.pgssoft.gimbus.Subscribe;
+import com.project.mzglinicki96.deltaDraw.PointListHolder;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.adapters.BluetoothDeviceListAdapter;
 import com.project.mzglinicki96.deltaDraw.bluetothService.ConnectThread;
-import com.project.mzglinicki96.deltaDraw.PointListHolder;
 import com.project.mzglinicki96.deltaDraw.bluetothService.ConnectedEvent;
 import com.project.mzglinicki96.deltaDraw.bluetothService.UnavailableConnectEvent;
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
-import com.github.rahatarmanahmed.cpv.CircularProgressView;
-import com.pgssoft.gimbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by mzglinicki.96 on 11.07.2016.
  */
 public class BluetoothConnectionActivity extends AppCompatActivity implements BluetoothDeviceListAdapter.ClickListener {
 
+    @Bind(R.id.listViewOfDevices)
+    ListView listView;
+    @Bind(R.id.progress_view)
+    CircularProgressView progressView;
+
     private static final int TURN_BT_ON_REQUEST_CODE = 1;
-    private CircularProgressView progressView;
     private BluetoothAdapter bluetoothAdapter;
     private List<BluetoothDevice> devices;
     private List<Point> coordinatesList = new ArrayList<>();
     private ConnectThread connectThread;
     private BluetoothDeviceListAdapter devicesListAdapter;
-    private ListView listView;
     private boolean discovering = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_connection);
-
+        ButterKnife.bind(this);
         coordinatesList = PointListHolder.getInstance().getCoordinatesList();
-        listView = (ListView) findViewById(R.id.listViewOfDevices);
-        progressView = (CircularProgressView) findViewById(R.id.progress_view);
 
         setProgressViewVisibility(discovering);
         setupBluetoothStateAndVisibility();
-
-        Button discoverButton = (Button) findViewById(R.id.discoverButton);
-        setOnDiscoverButtonClickListener(discoverButton);
     }
 
     @Override
@@ -117,6 +118,17 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
         }
     }
 
+    @OnClick(R.id.discoverButton)
+    public void onDiscoverButtonClickListener() {
+        final IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+
+        registerReceiver(receiver, filter);
+        bluetoothAdapter.startDiscovery();
+    }
+
     @Subscribe
     public void onConnectedEvent(ConnectedEvent event) {
         setProgressViewVisibility(false);
@@ -128,7 +140,6 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
         setProgressViewVisibility(false);
         Toast.makeText(this, R.string.device_unavailable, Toast.LENGTH_SHORT).show();
     }
-
 
     private void setupBluetoothStateAndVisibility() {
 
@@ -158,26 +169,6 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
         devicesListAdapter = new BluetoothDeviceListAdapter(this, devices, this);
         assert listView != null;
         listView.setAdapter(devicesListAdapter);
-    }
-
-    private void discoverDevices() {
-        final IntentFilter filter = new IntentFilter();
-        filter.addAction(BluetoothDevice.ACTION_FOUND);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-
-        registerReceiver(receiver, filter);
-        bluetoothAdapter.startDiscovery();
-    }
-
-    private void setOnDiscoverButtonClickListener(Button discoverButton) {
-        assert discoverButton != null;
-        discoverButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                discoverDevices();
-            }
-        });
     }
 
     private void setProgressViewVisibility(final boolean discovering) {

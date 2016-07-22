@@ -28,33 +28,23 @@
 
         <activity
             android:name="com.project.mzglinicki96.deltaDraw.activities.DatabaseActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.project.mzglinicki96.deltaDraw.activities.DrawCreatingActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.project.mzglinicki96.deltaDraw.activities.MainSettingsActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.project.mzglinicki96.deltaDraw.activities.CreditsActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.project.mzglinicki96.deltaDraw.activities.BluetoothConnectionActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait" />
 
     </application>
 

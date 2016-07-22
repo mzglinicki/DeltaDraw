@@ -41,7 +41,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsViewHolder> {
 
         final TextView settingTitle = holder.getSettingTitle();
         settingTitle.setText(settingModel.getSettingTitle());
-        holder.getSettingTitle().setOnClickListener(new View.OnClickListener() {
+        settingTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickListener.onClick(settingModel);
@@ -76,6 +76,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsViewHolder> {
 
     public interface ClickListener {
         void onClick(final SettingModel settingModel);
+
         void onCheckBoxClick(final SettingModel settingModel);
     }
 }

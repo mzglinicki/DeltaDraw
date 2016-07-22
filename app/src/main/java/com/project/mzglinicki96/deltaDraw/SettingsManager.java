@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * Created by mzglinicki.96 on 10.07.2016.
  */
@@ -20,19 +18,19 @@ public class SettingsManager {
         this.context = context;
     }
 
-    public static SettingsManager getInstance(final Context context)  {
+    public static SettingsManager getInstance(final Context context) {
 
-        if(settingsManager == null){
+        if (settingsManager == null) {
             settingsManager = new SettingsManager(context);
         }
         return settingsManager;
     }
 
-    public List<SettingModel> getListOfSettings(){
+    public List<SettingModel> getListOfSettings() {
         return createListOfSettings();
     }
 
-    private List<SettingModel> createListOfSettings(){
+    private List<SettingModel> createListOfSettings() {
         final SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_PRIVATE);
         boolean isMenuColorVisible = sharedPreferences.getBoolean(Constants.COLOR_MENU_VISIBILITY, true);
 
