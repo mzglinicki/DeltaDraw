@@ -16,7 +16,7 @@
             layout="@layout/database_header" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/pictureListRecycleView"
+            android:id="@+id/recycleView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/mainBackground"/>
@@ -33,7 +33,7 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floating_button"
+        android:id="@+id/floatingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

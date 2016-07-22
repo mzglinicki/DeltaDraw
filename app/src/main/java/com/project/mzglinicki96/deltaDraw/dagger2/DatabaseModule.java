@@ -7,6 +7,7 @@ import com.project.mzglinicki96.deltaDraw.activities.MyApplication;
 import com.project.mzglinicki96.deltaDraw.database.DatabaseHelper;
 
 import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -30,7 +31,7 @@ public class DatabaseModule {
 
     @Singleton
     @Provides
-    DatabaseHelper databaseHelper(){
+    DatabaseHelper databaseHelper() {
         return new DatabaseHelper(application.getApplicationContext());
     }
 }

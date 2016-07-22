@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
@@ -25,8 +24,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.project.mzglinicki96.deltaDraw.R;
-import com.project.mzglinicki96.deltaDraw.adapters.ListItemTouchHelper;
+import com.project.mzglinicki96.deltaDraw.adapters.PictureListTouchHelper;
 import com.project.mzglinicki96.deltaDraw.adapters.PictureListRecycleAdapter;
+import com.project.mzglinicki96.deltaDraw.adapters.PictureListViewHolder;
 import com.project.mzglinicki96.deltaDraw.database.DatabaseHelper;
 import com.project.mzglinicki96.deltaDraw.database.PictureModel;
 
@@ -35,6 +35,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by mzglinicki.96 on 27.03.2016.
  */
@@ -42,21 +46,18 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
 
     @Inject
     DatabaseHelper databaseHelper;
+    @Bind(R.id.recycleView)
+    RecyclerView recyclerView;
 
     private PictureListRecycleAdapter adapter;
-    private RecyclerView recyclerView;
     private List<PictureModel> pictureModels;
     private final List<PictureModel> pictureToRemove = new ArrayList<>();
-
-    private EditText pictureTitleEditField;
-    private EditText pictureAuthorEditField;
-    private ImageButton acceptChangesImageBtn;
-    private ImageButton cancelChangesImageBtn;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MyApplication)getApplication()).getComponent().inject(this);
+
+        ((MyApplication) getApplication()).getComponent().inject(this);
         createNewScreen();
     }
 
@@ -93,33 +94,12 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
     }
 
     @Override
-    public void onLongClick(final View view, final PictureModel model) {
+    public void onLongClick(final View view, final PictureModel model, final PictureListViewHolder holder) {
 
-        final List<View> normalViewItems = getNormalViewItems(view);
-        final List<View> editViewItems = getEditViewItems(view);
+        changeVisibility(holder.getListViewItems());
 
-        changeVisibility(normalViewItems);
-        changeVisibility(editViewItems);
-
-        acceptChangesImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                databaseHelper.updateAllData(pictureTitleEditField.getText().toString(), pictureAuthorEditField.getText().toString(), model.getPoints(), model.getId());
-                model.setAuthor(pictureAuthorEditField.getText().toString());
-                model.setName(pictureTitleEditField.getText().toString());
-                adapter.notifyDataSetChanged();
-                changeVisibility(editViewItems);
-                changeVisibility(normalViewItems);
-            }
-        });
-
-        cancelChangesImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeVisibility(editViewItems);
-                changeVisibility(normalViewItems);
-            }
-        });
+        onAcceptChangesClick(model, holder);
+        onCancelClick(holder);
     }
 
     @Override
@@ -173,8 +153,39 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         closeApplication();
     }
 
-    private void changeVisibility(final List<View> itemsToChange) {
-        for (View item : itemsToChange) {
+    public void onAcceptChangesClick(final PictureModel model, final PictureListViewHolder holder) {
+
+        holder.getAcceptChangesImageBtn().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String newTitle = holder.getPictureTitleEditField().getText().toString();
+                final String newAuthor = holder.getPictureAuthorEditField().getText().toString();
+                databaseHelper.updateAllData(newTitle, newAuthor, model.getPoints(), model.getId());
+                model.setName(newTitle);
+                model.setAuthor(newAuthor);
+                adapter.notifyDataSetChanged();
+                changeVisibility(holder.getListViewItems());
+            }
+        });
+    }
+
+    public void onCancelClick(final PictureListViewHolder holder) {
+
+        holder.getCancelChangesImageBtn().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeVisibility(holder.getListViewItems());
+            }
+        });
+    }
+
+    @OnClick(R.id.floatingButton)
+    public void onFABClick() {
+        showFloatingBtnAlert(getString(R.string.start_draw_title), DatabaseActivity.this);
+    }
+
+    private void changeVisibility(final List<View> listViewItems) {
+        for (View item : listViewItems) {
             item.setVisibility(item.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         }
     }
@@ -188,35 +199,9 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         checkIfAdapterIsEmpty();
     }
 
-    private List<View> getNormalViewItems(final View view) {
-        final TextView pictureTitleField = (TextView) view.findViewById(R.id.pictureTitleField);
-        final TextView pictureAuthorField = (TextView) view.findViewById(R.id.pictureAuthorField);
-        final TextView pictureDateField = (TextView) view.findViewById(R.id.pictureDateField);
-
-        final List<View> normalViewItems = new ArrayList<>();
-        normalViewItems.add(pictureTitleField);
-        normalViewItems.add(pictureAuthorField);
-        normalViewItems.add(pictureDateField);
-        return normalViewItems;
-    }
-
-    private List<View> getEditViewItems(final View view) {
-        pictureTitleEditField = (EditText) view.findViewById(R.id.pictureTitleEditField);
-        pictureAuthorEditField = (EditText) view.findViewById(R.id.pictureAuthorEditField);
-        acceptChangesImageBtn = (ImageButton) view.findViewById(R.id.acceptChangesImageBtn);
-        cancelChangesImageBtn = (ImageButton) view.findViewById(R.id.cancelChangesImageBtn);
-
-        final List<View> editViewItems = new ArrayList<>();
-        editViewItems.add(pictureTitleEditField);
-        editViewItems.add(pictureAuthorEditField);
-        editViewItems.add(acceptChangesImageBtn);
-        editViewItems.add(cancelChangesImageBtn);
-        return editViewItems;
-    }
-
     private void createNewScreen() {
         setContentView(R.layout.activity_database);
-
+        ButterKnife.bind(this);
         pictureModels = databaseHelper.getPicturesData();
         adapter = new PictureListRecycleAdapter(this, pictureModels);
         adapter.setClickListener(this);
@@ -224,7 +209,6 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         checkIfAdapterIsEmpty();
         setupRecyclerView();
         createItemTouchHelper();
-        setupFloatingButton();
     }
 
     private void checkIfAdapterIsEmpty() {
@@ -234,7 +218,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
     }
 
     private void setupRecyclerView() {
-        recyclerView = (RecyclerView) findViewById(R.id.pictureListRecycleView);
+
         assert recyclerView != null;
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
@@ -253,19 +237,6 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         finish();
     }
 
-    private void setupFloatingButton() {
-
-        final FloatingActionButton floatingButton = (FloatingActionButton) findViewById(R.id.floating_button);
-
-        assert floatingButton != null;
-        floatingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFloatingBtnAlert(getString(R.string.start_draw_title), DatabaseActivity.this);
-            }
-        });
-    }
-
     private List<PictureModel> filter(final List<PictureModel> models, String query) {
         query = query.toLowerCase();
 
@@ -282,7 +253,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
     }
 
     private void createItemTouchHelper() {
-        final ListItemTouchHelper callback = new ListItemTouchHelper(adapter, recyclerView);
+        final PictureListTouchHelper callback = new PictureListTouchHelper(adapter);
         final ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
@@ -313,7 +284,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
                 .setPositiveButton(R.string.start_draw_btn, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        setStartDrawClickListener(view, context);
+                        startDraw(view);
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
@@ -322,11 +293,10 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         alert.show();
     }
 
-    private void setStartDrawClickListener(final View view, final Context context) {
-
-        final AppCompatEditText pictureName = (AppCompatEditText) view.findViewById(R.id.textPictureName);
+    private void startDraw(View view) {
+        final AppCompatEditText pictureTitle = (AppCompatEditText) view.findViewById(R.id.textPictureTitle);
         final AppCompatEditText pictureAuthor = (AppCompatEditText) view.findViewById(R.id.textAuthor);
-        final String name = pictureName.getText().toString();
+        final String name = pictureTitle.getText().toString();
         final String author = pictureAuthor.getText().toString();
 
         if (!name.isEmpty() && !author.isEmpty()) {

@@ -41,7 +41,6 @@ public class DrawCreatingActivity extends AppCompatActivity {
     @Inject
     DatabaseHelper databaseHelper;
 
-    private final EventBus gimBus = GimBus.getInstance();
     private List<Point> coordinatesList;
     private List<Point> initialList = new ArrayList<>();
 
@@ -61,7 +60,7 @@ public class DrawCreatingActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        gimBus.register(this);
+        GimBus.getInstance().register(this);
     }
 
     @Override
@@ -100,7 +99,7 @@ public class DrawCreatingActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        gimBus.unregister(this);
+        GimBus.getInstance().unregister(this);
     }
 
     private void setupUI() {

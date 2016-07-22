@@ -13,8 +13,8 @@ import dagger.Component;
  * Created by mzglinicki.96 on 21.07.2016.
  */
 @Singleton
-@Component(modules = DatabaseModule.class)
-public interface DatabaseComponent {
+@Component(modules = {DatabaseModule.class})
+public interface StorageComponent {
 
     void inject(DatabaseActivity databaseActivity);
 

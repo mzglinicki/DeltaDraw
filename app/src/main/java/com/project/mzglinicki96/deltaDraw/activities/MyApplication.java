@@ -2,8 +2,8 @@ package com.project.mzglinicki96.deltaDraw.activities;
 
 import android.app.Application;
 
-import com.project.mzglinicki96.deltaDraw.dagger2.DaggerDatabaseComponent;
-import com.project.mzglinicki96.deltaDraw.dagger2.DatabaseComponent;
+import com.project.mzglinicki96.deltaDraw.dagger2.DaggerStorageComponent;
+import com.project.mzglinicki96.deltaDraw.dagger2.StorageComponent;
 import com.project.mzglinicki96.deltaDraw.dagger2.DatabaseModule;
 
 /**
@@ -11,18 +11,18 @@ import com.project.mzglinicki96.deltaDraw.dagger2.DatabaseModule;
  */
 public class MyApplication extends Application {
 
-    DatabaseComponent component;
+    StorageComponent component;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        component = DaggerDatabaseComponent
+        component = DaggerStorageComponent
                 .builder()
                 .databaseModule(new DatabaseModule(this))
                 .build();
     }
 
-    public DatabaseComponent getComponent() {
+    public StorageComponent getComponent() {
         return component;
     }
 }

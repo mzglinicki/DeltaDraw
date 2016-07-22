@@ -7,14 +7,12 @@ import android.support.v7.widget.helper.ItemTouchHelper;
  * Created by mzglinicki.96 on 02.07.2016.
  *
  */
-public class ListItemTouchHelper extends ItemTouchHelper.Callback {
+public class PictureListTouchHelper extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperAdapter mAdapter;
-    private final RecyclerView recyclerView;
 
-    public ListItemTouchHelper(final ItemTouchHelperAdapter mAdapter, final RecyclerView recyclerView) {
+    public PictureListTouchHelper(final ItemTouchHelperAdapter mAdapter) {
         this.mAdapter = mAdapter;
-        this.recyclerView = recyclerView;
     }
 
     public interface ItemTouchHelperAdapter {

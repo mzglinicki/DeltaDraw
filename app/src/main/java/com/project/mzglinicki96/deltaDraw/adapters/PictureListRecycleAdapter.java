@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by mzglinicki.96 on 01.07.2016.
  */
-public class PictureListRecycleAdapter extends RecyclerView.Adapter<ListItemViewHolder> implements ListItemTouchHelper.ItemTouchHelperAdapter {
+public class PictureListRecycleAdapter extends RecyclerView.Adapter<PictureListViewHolder> implements PictureListTouchHelper.ItemTouchHelperAdapter {
 
     private final LayoutInflater inflater;
     private List<PictureModel> pictureModels;
@@ -26,13 +26,13 @@ public class PictureListRecycleAdapter extends RecyclerView.Adapter<ListItemView
     }
 
     @Override
-    public ListItemViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+    public PictureListViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         final View view = inflater.inflate(R.layout.data_picture_model, parent, false);
-        return new ListItemViewHolder(view);
+        return new PictureListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ListItemViewHolder holder, final int position) {
+    public void onBindViewHolder(final PictureListViewHolder holder, final int position) {
 
         final PictureModel model = pictureModels.get(position);
         holder.getPictureTitleField().setText(model.getName());
@@ -51,7 +51,7 @@ public class PictureListRecycleAdapter extends RecyclerView.Adapter<ListItemView
             @Override
             public boolean onLongClick(View v) {
                 if (clickListener != null) {
-                    clickListener.onLongClick(v, model);
+                    clickListener.onLongClick(v, model, holder);
                 }
                 return true;
             }
@@ -82,7 +82,7 @@ public class PictureListRecycleAdapter extends RecyclerView.Adapter<ListItemView
     public interface ClickListener {
         void onClick(final int position);
 
-        void onLongClick(final View view, final PictureModel model);
+        void onLongClick(final View view, final PictureModel model, final PictureListViewHolder holder);
 
         void onDeleteItem(final PictureModel model, final int position);
     }
