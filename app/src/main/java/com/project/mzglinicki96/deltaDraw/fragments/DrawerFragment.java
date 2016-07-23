@@ -45,7 +45,6 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
     @Bind(R.id.fabMenuContainer)
     RelativeLayout container;
 
-
     private final static int FLOATING_COLOR_MENU_RADIUS = 200;
     private final static int MENU_INITIAL_ROTATION = 0;
     private final static int ON_MENU_OPEN_ROTATION = 45;
