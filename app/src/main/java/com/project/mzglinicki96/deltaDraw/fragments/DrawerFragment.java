@@ -3,9 +3,11 @@ package com.project.mzglinicki96.deltaDraw.fragments;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.DragEvent;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
@@ -20,6 +23,9 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.pgssoft.gimbus.Subscribe;
 import com.project.mzglinicki96.deltaDraw.Constants;
 import com.project.mzglinicki96.deltaDraw.FloatingColorMenuHelper;
+import com.project.mzglinicki96.deltaDraw.SettingModel;
+import com.project.mzglinicki96.deltaDraw.SettingsHelper;
+import com.project.mzglinicki96.deltaDraw.SettingsManager;
 import com.project.mzglinicki96.deltaDraw.activities.MyApplication;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
@@ -39,7 +45,7 @@ import butterknife.ButterKnife;
 public class DrawerFragment extends FragmentParent implements View.OnDragListener {
 
     @Inject
-    SharedPreferences sharedPreferences;
+    SettingsManager settingsManager;
     @Bind(R.id.canvas)
     DrawerOnScreen drawer;
     @Bind(R.id.fabMenuContainer)
@@ -57,6 +63,7 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
     private FloatingActionMenu actionMenu;
     private List<ImageView> actionImages;
     private FloatingActionButton floatingActionButton;
+    private SharedPreferences sharedPreferences;
 
     public DrawerFragment() {
 
@@ -72,7 +79,9 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
         ButterKnife.bind(this, view);
         ((MyApplication) getActivity().getApplication()).getComponent().inject(this);
 
-        if(sharedPreferences.getBoolean(Constants.COLOR_MENU_VISIBILITY, true)){
+        sharedPreferences = settingsManager.getSharedPreferences();
+
+        if (sharedPreferences.getBoolean(Constants.COLOR_MENU_VISIBILITY, true)) {
             createFloatingColorChangeMenu(STRAIGHT_ANGLE, THREE_QUARTERS_ANGLE);
         }
     }
@@ -90,10 +99,6 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
 
         final View menuButton = (View) event.getLocalState();
         final ViewGroup owner = (ViewGroup) menuButton.getParent();
-        final FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) owner.getLayoutParams();
-
-        int viewHeight = v.getHeight();
-        int viewWidth = v.getWidth();
 
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED:
@@ -103,19 +108,55 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
 
                 int xCord = (int) event.getX();
                 int yCord = (int) event.getY();
-                int bottomMargin = viewHeight - yCord - (owner.getHeight() / 2);
-                int rightMargin = viewWidth - xCord - (owner.getWidth() / 2);
-
-                layoutParams.setMargins(0, 0, rightMargin, bottomMargin);
-                owner.setLayoutParams(layoutParams);
-                menuButton.setVisibility(View.VISIBLE);
-
-                setMenuOrientation(xCord, yCord, viewWidth, viewHeight);
+                changeFABLocation(v, xCord, yCord, owner, menuButton);
+                break;
+            case DragEvent.ACTION_DRAG_ENDED:
+                if (!event.getResult()) {
+                    showTurnOffMenuDialog(v, menuButton, owner);
+                }
                 break;
             default:
                 break;
         }
         return true;
+    }
+
+    private void changeFABLocation(final View v, final int xCord, int yCord, ViewGroup owner, View menuButton) {
+
+        final FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) owner.getLayoutParams();
+
+        int viewHeight = v.getHeight();
+        int viewWidth = v.getWidth();
+
+        int bottomMargin = viewHeight - yCord - (owner.getHeight() / 2);
+        int rightMargin = viewWidth - xCord - (owner.getWidth() / 2);
+
+        layoutParams.setMargins(0, 0, rightMargin, bottomMargin);
+        owner.setLayoutParams(layoutParams);
+        menuButton.setVisibility(View.VISIBLE);
+
+        setMenuOrientation(xCord, yCord, viewWidth, viewHeight);
+    }
+
+    private void showTurnOffMenuDialog(final View v, final View menuButton, final ViewGroup owner) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setMessage(getContext().getString(R.string.turnMenuOffDialog))
+                .setPositiveButton(R.string.yes_btn, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final List<SettingModel> settings = settingsManager.getListOfSettings();
+                        settingsManager.toggleCheckBoxMarked(settings.get(SettingsHelper.COLOR_MENU_VISIBILITY.ordinal()));
+                    }
+                })
+                .setNegativeButton(R.string.no_btn, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        changeFABLocation(v, v.getWidth() / 2, v.getHeight() / 2, owner, menuButton);
+                    }
+                })
+                .create()
+                .show();
     }
 
     private void createFloatingColorChangeMenu(int startAngle, int endAngle) {
@@ -207,7 +248,7 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
         return enableButtons;
     }
 
-    private boolean getSharedPreferences(String color){
+    private boolean getSharedPreferences(String color) {
         return sharedPreferences.getBoolean(color, true);
     }
 

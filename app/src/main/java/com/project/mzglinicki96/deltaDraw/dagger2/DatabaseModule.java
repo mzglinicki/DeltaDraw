@@ -3,6 +3,7 @@ package com.project.mzglinicki96.deltaDraw.dagger2;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.project.mzglinicki96.deltaDraw.SettingsManager;
 import com.project.mzglinicki96.deltaDraw.activities.MyApplication;
 import com.project.mzglinicki96.deltaDraw.database.DatabaseHelper;
 
@@ -33,5 +34,11 @@ public class DatabaseModule {
     @Provides
     DatabaseHelper databaseHelper() {
         return new DatabaseHelper(application.getApplicationContext());
+    }
+
+    @Singleton
+    @Provides
+    SettingsManager settingsManager() {
+        return new SettingsManager(provideSharedPreferences());
     }
 }

@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.adapters.PictureListRecycleAdapter;
@@ -47,6 +48,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
     @Bind(R.id.recycleView)
     RecyclerView recyclerView;
 
+    private boolean editing = false;
     private PictureListRecycleAdapter adapter;
     private List<PictureModel> pictureModels;
     private final List<PictureModel> pictureToRemove = new ArrayList<>();
@@ -94,10 +96,14 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
     @Override
     public void onLongClick(final View view, final PictureModel model, final PictureListViewHolder holder) {
 
-        changeVisibility(holder.getListViewItems());
-
-        onAcceptChangesClick(model, holder);
-        onCancelClick(holder);
+        if (editing) {
+            Toast.makeText(this, R.string.acceptPreviousChanges, Toast.LENGTH_SHORT).show();
+        } else {
+            editing = true;
+            changeVisibility(holder.getListViewItems());
+            onAcceptChangesClick(model, holder);
+            onCancelClick(holder);
+        }
     }
 
     @Override
@@ -156,7 +162,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         showFloatingBtnAlert(getString(R.string.start_draw_title), DatabaseActivity.this);
     }
 
-    public void onAcceptChangesClick(final PictureModel model, final PictureListViewHolder holder) {
+    public boolean onAcceptChangesClick(final PictureModel model, final PictureListViewHolder holder) {
 
         holder.getAcceptChangesImageBtn().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,18 +174,22 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
                 model.setAuthor(newAuthor);
                 adapter.notifyDataSetChanged();
                 changeVisibility(holder.getListViewItems());
+                editing = false;
             }
         });
+        return true;
     }
 
-    public void onCancelClick(final PictureListViewHolder holder) {
+    public boolean onCancelClick(final PictureListViewHolder holder) {
 
         holder.getCancelChangesImageBtn().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeVisibility(holder.getListViewItems());
+                editing = false;
             }
         });
+        return true;
     }
 
     private void changeVisibility(final List<View> listViewItems) {

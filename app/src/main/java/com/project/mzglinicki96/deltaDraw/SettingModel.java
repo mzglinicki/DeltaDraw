@@ -1,25 +1,16 @@
 package com.project.mzglinicki96.deltaDraw;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.project.mzglinicki96.deltaDraw.activities.MyApplication;
-
-import javax.inject.Inject;
-
 /**
  * Created by mzglinicki.96 on 08.07.2016.
  */
 public class SettingModel {
 
-    private final Context context;
     private final String settingTitle;
     private final int settingId;
     private final boolean checkBoxVisibility;
     private boolean mark;
 
-    public SettingModel(final Context context, final int settingId, final String settingTitle, final boolean isCheckBoxVisible, final boolean mark) {
-        this.context = context;
+    public SettingModel(final int settingId, final String settingTitle, final boolean isCheckBoxVisible, final boolean mark) {
         this.settingId = settingId;
         this.settingTitle = settingTitle;
         this.checkBoxVisibility = isCheckBoxVisible;
@@ -42,16 +33,12 @@ public class SettingModel {
         return mark;
     }
 
-    public void setMarked(){
+    public void setMarked() {
         mark = true;
     }
 
     public boolean toggleMark() {
-
         mark = !mark;
-
-        final SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_PREFERENCES, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putBoolean(Constants.COLOR_MENU_VISIBILITY,mark).apply();
         return mark;
     }
 }

@@ -34,12 +34,13 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
     @Inject
     DatabaseHelper databaseHelper;
     @Inject
-    SharedPreferences sharedPreferences;
+    SettingsManager settingsManager;
     @Bind(R.id.settingsListRecycleView)
     RecyclerView recyclerView;
 
     private SettingsAdapter adapter;
     private List<SettingModel> settingModels;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +49,9 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
         ButterKnife.bind(this);
         ((MyApplication) getApplication()).getComponent().inject(this);
 
-        settingModels = SettingsManager.getInstance(this).getListOfSettings();
+        sharedPreferences = settingsManager.getSharedPreferences();
+
+        settingModels = settingsManager.getListOfSettings();
         adapter = new SettingsAdapter(this, settingModels, this);
 
         setupRecycleView();
@@ -82,7 +85,9 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
 
     @Override
     public void onCheckBoxClick(final SettingModel settingModel) {
-        settingModel.toggleMark();
+
+        settingsManager.toggleCheckBoxMarked(settingModel);
+//        settingModel.toggleMark();
     }
 
     private void setDefaultColor() {

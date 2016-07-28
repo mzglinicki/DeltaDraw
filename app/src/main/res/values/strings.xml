@@ -66,6 +66,8 @@
     <string name="black">Black</string>
 
     <string name="credits">Application is part of engineering thesis:\n \"Program generator for ABB robots\"\nAuthor: Marcin Zglinicki\nE-mail: mzglinicki.96@gmail.com</string>
+    <string name="turnMenuOffDialog">Turn off color menu?</string>
+    <string name="acceptPreviousChanges">Accept previous changes</string>
 
     <string-array name="colors">
         <item>Black</item>
@@ -76,5 +78,3 @@
         <item>Yellow</item>
     </string-array>
 </resources>
-
-
