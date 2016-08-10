@@ -3,9 +3,12 @@ package com.project.mzglinicki96.deltaDraw.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +22,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,6 +95,8 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
 
     @Override
     public void onClick(int position) {
+
+
         startActivity(DrawCreatingActivity.class, databaseHelper.getDataFromRow(position));
     }
 
@@ -101,6 +108,8 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         } else {
             editing = true;
             changeVisibility(holder.getListViewItems());
+            holder.getPictureTitleEditField().setText(holder.getPictureTitleField().getText().toString());
+            holder.getPictureAuthorEditField().setText(holder.getAuthorField().getText().toString());
             onAcceptChangesClick(model, holder);
             onCancelClick(holder);
         }
@@ -108,11 +117,6 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
 
     @Override
     public void onDeleteItem(final PictureModel model, final int position) {
-
-        if (!pictureToRemove.isEmpty()) {
-            pictureToRemove.remove(pictureToRemove.get(0));
-        }
-        pictureToRemove.add(model);
 
         final Snackbar snackbar = Snackbar
                 .make(recyclerView, R.string.deleted_snackbar, Snackbar.LENGTH_LONG)
@@ -169,12 +173,14 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
             public void onClick(View v) {
                 final String newTitle = holder.getPictureTitleEditField().getText().toString();
                 final String newAuthor = holder.getPictureAuthorEditField().getText().toString();
-                databaseHelper.updateAllData(newTitle, newAuthor, model.getPoints(), model.getId());
-                model.setName(newTitle);
-                model.setAuthor(newAuthor);
-                adapter.notifyDataSetChanged();
-                changeVisibility(holder.getListViewItems());
-                editing = false;
+                if (!newTitle.isEmpty() && !newAuthor.isEmpty()) {
+                    databaseHelper.updateAllData(newTitle, newAuthor, model.getPoints(), model.getId());
+                    model.setName(newTitle);
+                    model.setAuthor(newAuthor);
+                    adapter.notifyDataSetChanged();
+                    changeVisibility(holder.getListViewItems());
+                    editing = false;
+                }
             }
         });
         return true;
@@ -193,14 +199,13 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
     }
 
     private void changeVisibility(final List<View> listViewItems) {
-        for (View item : listViewItems) {
+        for (final View item : listViewItems) {
             item.setVisibility(item.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         }
     }
 
     private void onUndoClick(final PictureModel model, final int position) {
         pictureModels.add(position, model);
-        databaseHelper.insertData(model.getName(), model.getAuthor(), model.getPoints());
         adapter.notifyItemInserted(position);
         recyclerView.scrollToPosition(position);
         pictureToRemove.remove(model);
@@ -301,7 +306,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
                 .show();
     }
 
-    private void startDraw(View view) {
+    private void startDraw(final View view) {
         final AppCompatEditText pictureTitle = (AppCompatEditText) view.findViewById(R.id.textPictureTitle);
         final AppCompatEditText pictureAuthor = (AppCompatEditText) view.findViewById(R.id.textAuthor);
         final String name = pictureTitle.getText().toString();
@@ -310,6 +315,8 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         if (!name.isEmpty() && !author.isEmpty()) {
             databaseHelper.insertData(name, author, null);
             startActivity(DrawCreatingActivity.class, databaseHelper.getLastSavedRow());
+        } else {
+            Toast.makeText(this, R.string.uncompletedData, Toast.LENGTH_SHORT).show();
         }
     }
 }

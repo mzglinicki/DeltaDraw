@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.project.mzglinicki96.deltaDraw.FloatingColorMenuHelper;
@@ -41,6 +43,7 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
     private SettingsAdapter adapter;
     private List<SettingModel> settingModels;
     private SharedPreferences sharedPreferences;
+    private AlertDialog buttonColor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +80,7 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
         if (settingModel.getSettingId() == SettingsHelper.DELETE_ALL.ordinal()) {
             deleteAllImagesDialog();
         } else if (settingModel.getSettingId() == SettingsHelper.COLORS_AMOUNT.ordinal()) {
-            setDefaultColor();
+            chooseColors();
         } else {
             clearSharedPreferences();
         }
@@ -85,12 +88,10 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
 
     @Override
     public void onCheckBoxClick(final SettingModel settingModel) {
-
         settingsManager.toggleCheckBoxMarked(settingModel);
-//        settingModel.toggleMark();
     }
 
-    private void setDefaultColor() {
+    private void chooseColors() {
 
         final String arrayOfColors[] = getResources().getStringArray(R.array.colors);
 
@@ -132,6 +133,7 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
         sharedPreferences.edit().clear().apply();
         settingModels.get(SettingsHelper.COLOR_MENU_VISIBILITY.ordinal()).setMarked();
         adapter.update();
+        Toast.makeText(this, R.string.setDefaultSetting, Toast.LENGTH_SHORT).show();
     }
 
     private void deleteAllImagesDialog() {
@@ -149,5 +151,9 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
                 .setNegativeButton(R.string.no_btn, null)
                 .create()
                 .show();
+    }
+
+    public void setButtonColor(AlertDialog buttonColor) {
+        this.buttonColor = buttonColor;
     }
 }

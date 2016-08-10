@@ -43,16 +43,16 @@ public class PictureListViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
+    public TextView getDateField() {
+        return pictureDateField;
+    }
+
     public TextView getPictureTitleField() {
         return pictureTitleField;
     }
 
     public TextView getAuthorField() {
         return pictureAuthorField;
-    }
-
-    public TextView getDateField() {
-        return pictureDateField;
     }
 
     public RelativeLayout getRecord() {

@@ -31,6 +31,7 @@ public class EditorFragment extends FragmentParent {
     Button editCodeAcceptor;
 
     private static final int NUM_OF_POINTS_INCREMENTATOR = 10;
+    private boolean errorInList = false;
 
     public EditorFragment() {
         titleId = R.string.edit_tab_title;
@@ -50,6 +51,7 @@ public class EditorFragment extends FragmentParent {
 
     @OnClick(R.id.editCodeAcceptor)
     public void onEditCodeAcceptorClick() {
+
         coordinatesList.clear();
         int x;
         int y;
@@ -62,12 +64,18 @@ public class EditorFragment extends FragmentParent {
                 matcher.find();
                 y = Integer.parseInt(matcher.group().trim());
             } catch (IllegalStateException exception) {
+                errorInList = true;
                 continue;
             }
             coordinatesList.add(new Point(x, y));
         }
-        GimBus.getInstance().post(new OnCreatePictureEvent(coordinatesList));
-        Toast.makeText(getContext(), R.string.saved_toast, Toast.LENGTH_SHORT).show();
+        if (errorInList) {
+            Toast.makeText(getContext(), R.string.errorsInList, Toast.LENGTH_SHORT).show();
+            errorInList = false;
+        }else {
+            GimBus.getInstance().post(new OnCreatePictureEvent(coordinatesList));
+            Toast.makeText(getContext(), R.string.saved_toast, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Subscribe

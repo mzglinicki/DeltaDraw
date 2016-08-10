@@ -13,9 +13,9 @@
     <color name="colorGray_800">#424242</color>
     <color name="colorGray_700">#616161</color>
     <color name="colorGray_500">#9E9E9E</color>
-    <color name="lightGreen_A400">#64DD17</color>
+    <color name="greenAccent">#64DD17</color>
 
-    <color name="accent">@color/lightGreen_A400</color>
+    <color name="accent">@color/greenAccent</color>
 
     <!-- Text color -->
     <color name="lightTextColor">@color/white</color>
@@ -29,5 +29,3 @@
     <color name="mainBackground">@color/colorGray_500</color>
 
 </resources>
-
-

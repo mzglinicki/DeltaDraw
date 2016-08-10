@@ -5,7 +5,12 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary_gray_900</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_gray_800</item>
-        <item name="colorAccent">@color/lightGreen_A400</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
+    </style>
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/accent</item>
     </style>
 
     <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
@@ -48,7 +53,5 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/button_background</item>
         <item name="android:textColor">@color/lightTextColor</item>
-
-
     </style>
 </resources>

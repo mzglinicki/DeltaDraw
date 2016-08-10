@@ -26,7 +26,7 @@
     <string name="picture_name_txt">Title</string>
     <string name="date_txt">Date</string>
 
-   <!-- buttons -->
+    <!-- buttons -->
     <string name="set_changes_btn">Set changes</string>
     <string name="discover_new_devices">Discover new devices</string>
 
@@ -44,7 +44,7 @@
     <string name="connected">Connected</string>
     <string name="device_unavailable">Device is unavailable</string>
 
-   <!-- alerts -->
+    <!-- alerts -->
     <string name="close_app_dialog">Close application?</string>
     <string name="ask_for_save_changes">Save changes?</string>
 
@@ -65,9 +65,12 @@
     <string name="green">Green</string>
     <string name="black">Black</string>
 
-    <string name="credits">Application is part of engineering thesis:\n \"Program generator for ABB robots\"\nAuthor: Marcin Zglinicki\nE-mail: mzglinicki.96@gmail.com</string>
+    <string name="credits">Author: Marcin Zglinicki\nE-mail: mzglinicki.96@gmail.com</string>
     <string name="turnMenuOffDialog">Turn off color menu?</string>
     <string name="acceptPreviousChanges">Accept previous changes</string>
+    <string name="setDefaultSetting">Done</string>
+    <string name="uncompletedData">Uncompleted data</string>
+    <string name="errorsInList">List contain errors</string>
 
     <string-array name="colors">
         <item>Black</item>

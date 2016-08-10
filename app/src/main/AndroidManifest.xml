@@ -15,7 +15,7 @@
         android:windowSoftInputMode="adjustPan">
 
         <activity
-            android:name="com.project.mzglinicki96.deltaDraw.activities.SplashScreenActivity"
+            android:name=".activities.SplashScreenActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
 
@@ -27,23 +27,23 @@
         </activity>
 
         <activity
-            android:name="com.project.mzglinicki96.deltaDraw.activities.DatabaseActivity"
+            android:name=".activities.DatabaseActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.project.mzglinicki96.deltaDraw.activities.DrawCreatingActivity"
+            android:name=".activities.DrawCreatingActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.project.mzglinicki96.deltaDraw.activities.MainSettingsActivity"
+            android:name=".activities.MainSettingsActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.project.mzglinicki96.deltaDraw.activities.CreditsActivity"
+            android:name=".activities.CreditsActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.project.mzglinicki96.deltaDraw.activities.BluetoothConnectionActivity"
+            android:name=".activities.BluetoothConnectionActivity"
             android:screenOrientation="portrait" />
 
     </application>

@@ -66,9 +66,12 @@ Narysuje linie pomiędzy punktami\n (100, 200) i (300, 400)</string>
     <string name="green">Zielony</string>
     <string name="black">Czarny</string>
 
-    <string name="credits">Aplikacja jest częścią pracy inżynierskiej:\n \"Generator kodu dla robotów firmy ABB\"\nAutor: Marcin Zglinicki\nKontakt: mzglinicki.96@gmail.com</string>
+    <string name="credits">Autor: Marcin Zglinicki\nKontakt: mzglinicki.96@gmail.com</string>
     <string name="turnMenuOffDialog">Wyłączyć menu kolorów?</string>
     <string name="acceptPreviousChanges">Zatwierdź wcześniejsze zmiany</string>
+    <string name="setDefaultSetting">Przywrócono ustawiania domyślne</string>
+    <string name="uncompletedData">Niekompletne dane</string>
+    <string name="errorsInList">Lista zawiera błędy</string>
 
     <string-array name="colors">
         <item>Czarny</item>

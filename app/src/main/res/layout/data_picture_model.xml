@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/record"
     android:layout_width="match_parent"
     android:layout_height="@dimen/listItem"
@@ -29,8 +29,8 @@
         style="@style/iconStyle"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        app:srcCompat="@drawable/ic_check_24dp"
         android:visibility="gone"
+        app:srcCompat="@drawable/ic_check_24dp"
         tools:ignore="ContentDescription" />
 
     <ImageButton
@@ -38,8 +38,8 @@
         style="@style/iconStyle"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/acceptChangesImageBtn"
-        app:srcCompat="@drawable/ic_clear_accent_24dp"
         android:visibility="gone"
+        app:srcCompat="@drawable/ic_clear_accent_24dp"
         tools:ignore="ContentDescription" />
 
     <TextView

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.database.PictureModel;
@@ -38,6 +39,10 @@ public class PictureListRecycleAdapter extends RecyclerView.Adapter<PictureListV
         holder.getPictureTitleField().setText(model.getName());
         holder.getAuthorField().setText(model.getAuthor());
         holder.getDateField().setText(model.getDate());
+        setOnClickListener(holder, model);
+    }
+
+    private void setOnClickListener(final PictureListViewHolder holder, final PictureModel model) {
         holder.getRecord().setOnClickListener(new View.OnClickListener() {
 
             @Override
