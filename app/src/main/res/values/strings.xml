@@ -71,6 +71,8 @@
     <string name="setDefaultSetting">Done</string>
     <string name="uncompletedData">Uncompleted data</string>
     <string name="errorsInList">List contain errors</string>
+    <string name="errors">Errors in lines:\n</string>
+    <string name="errorCloseBtnText">Close</string>
 
     <string-array name="colors">
         <item>Black</item>

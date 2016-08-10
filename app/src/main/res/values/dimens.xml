@@ -11,6 +11,7 @@
     <dimen name="body">14sp</dimen>
     <dimen name="column_width">100dp</dimen>
     <dimen name="fabMargin">16dp</dimen>
+    <dimen name="smallText">12sp</dimen>
 
     <!-- Icons -->
 
@@ -37,7 +38,9 @@
     <dimen name="menuColorContainer">80dp</dimen>
     <dimen name="creditsDeltaHeight">300dp</dimen>
     <dimen name="creditsDeltaWidth">180dp</dimen>
+    <dimen name="errorWindowWidth">200dp</dimen>
+    <dimen name="errorWindowHeight">200dp</dimen>
+    <dimen name="errorBtnHeight">24dp</dimen>
     <integer name="movement_loop_time">800</integer>
-
 
 </resources>

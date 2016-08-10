@@ -1,9 +1,13 @@
 package com.project.mzglinicki96.deltaDraw.fragments;
 
+import android.content.Context;
 import android.graphics.Point;
+import android.support.v7.widget.CardView;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pgssoft.gimbus.Subscribe;
@@ -12,6 +16,7 @@ import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
 import com.project.mzglinicki96.deltaDraw.eventBus.OnCreatePictureEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,9 +34,14 @@ public class EditorFragment extends FragmentParent {
     EditText pointsHolder;
     @Bind(R.id.editCodeAcceptor)
     Button editCodeAcceptor;
+    @Bind(R.id.errorCardView)
+    CardView errorCardView;
+    @Bind(R.id.errorTextView)
+    TextView errorTextView;
 
     private static final int NUM_OF_POINTS_INCREMENTATOR = 10;
-    private boolean errorInList = false;
+    private List<String> linesWithErrors;
+    private InputMethodManager inputManager;
 
     public EditorFragment() {
         titleId = R.string.edit_tab_title;
@@ -42,6 +52,20 @@ public class EditorFragment extends FragmentParent {
     @Override
     protected void init(final View view) {
         ButterKnife.bind(this, view);
+        inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+    }
+
+    @OnClick(R.id.closeErrBtn)
+    public void onCloseErrorCardClick() {
+        errorCardView.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.editTextListOfPoints)
+    public void onCodeEditTextClick() {
+        if (inputManager.isActive()) {
+            errorCardView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -52,6 +76,12 @@ public class EditorFragment extends FragmentParent {
     @OnClick(R.id.editCodeAcceptor)
     public void onEditCodeAcceptorClick() {
 
+        inputManager.hideSoftInputFromWindow(pointsHolder.getWindowToken(), 0);
+
+        if (!isInputDataCorrect()) {
+            showErrorView();
+            return;
+        }
         coordinatesList.clear();
         int x;
         int y;
@@ -64,18 +94,38 @@ public class EditorFragment extends FragmentParent {
                 matcher.find();
                 y = Integer.parseInt(matcher.group().trim());
             } catch (IllegalStateException exception) {
-                errorInList = true;
                 continue;
             }
             coordinatesList.add(new Point(x, y));
         }
-        if (errorInList) {
-            Toast.makeText(getContext(), R.string.errorsInList, Toast.LENGTH_SHORT).show();
-            errorInList = false;
-        }else {
-            GimBus.getInstance().post(new OnCreatePictureEvent(coordinatesList));
-            Toast.makeText(getContext(), R.string.saved_toast, Toast.LENGTH_SHORT).show();
+        GimBus.getInstance().post(new OnCreatePictureEvent(coordinatesList));
+        Toast.makeText(getContext(), R.string.saved_toast, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showErrorView() {
+        errorCardView.setVisibility(View.VISIBLE);
+        final StringBuffer errorMassage = new StringBuffer();
+        errorMassage.append(getResources().getString(R.string.errors));
+        for (final String lineWithError : linesWithErrors) {
+            errorMassage.append(lineWithError).append("\n");
         }
+        errorTextView.setText(errorMassage);
+    }
+
+    private boolean isInputDataCorrect() {
+
+        linesWithErrors = new ArrayList<>();
+        final String codeByLines[] = pointsHolder.getText().toString().split("[\n]");
+
+        for (int i = 0; i < codeByLines.length - 1; i++) {
+            final String line = codeByLines[i];
+            final Pattern pattern = Pattern.compile("(\\D\\d+\\s\\d+\\D\\s\\d+)|(\\-\\d\\D\\s\\-\\d)");
+            final Matcher matcher = pattern.matcher(line);
+            if (!matcher.matches()) {
+                linesWithErrors.add(line);
+            }
+        }
+        return linesWithErrors.isEmpty();
     }
 
     @Subscribe
