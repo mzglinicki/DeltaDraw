@@ -3,6 +3,7 @@ package com.project.mzglinicki96.deltaDraw.bluetothService;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.Handler;
 
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
 
@@ -19,6 +20,7 @@ public class ConnectThread extends Thread {
     private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private final byte[] dataToSend;
     private ConnectedThread connectedThread;
+    private Handler handler = new Handler();
 
     public ConnectThread(final BluetoothDevice device, final byte[] dataToSend) {
         BluetoothSocket bluetoothSocket = null;
@@ -45,7 +47,7 @@ public class ConnectThread extends Thread {
             }
             return;
         }
-        connectedThread = new ConnectedThread(socket, dataToSend);
+        connectedThread = new ConnectedThread(socket, dataToSend, handler);
         connectedThread.start();
     }
 

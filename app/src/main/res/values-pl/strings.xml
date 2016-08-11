@@ -72,9 +72,9 @@ Narysuje linie pomiędzy punktami\n (100, 200) i (300, 400)</string>
     <string name="setDefaultSetting">Przywrócono ustawiania domyślne</string>
     <string name="uncompletedData">Niekompletne dane</string>
     <string name="errorsInList">Lista zawiera błędy</string>
-    <string name="errors">Znaleziono błędy w linijkach:\n</string>
+    <string name="errors">Znaleziono błąd w liniach:\n</string>
+    <string name="error">Znaleziono błąd w linii:\n</string>
     <string name="errorCloseBtnText">Zamknij</string>
-
 
     <string-array name="colors">
         <item>Czarny</item>

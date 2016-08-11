@@ -1,6 +1,7 @@
 package com.project.mzglinicki96.deltaDraw.bluetothService;
 
 import android.bluetooth.BluetoothSocket;
+import android.os.Handler;
 
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
 
@@ -12,18 +13,19 @@ import java.io.OutputStream;
  */
 public class ConnectedThread extends Thread {
 
+    final Handler handler;
     private final BluetoothSocket socket;
     private final OutputStream outStream;
     private final byte[] dataToSend;
 
-    public ConnectedThread(final BluetoothSocket socket, final byte[] dataToSend) {
+    public ConnectedThread(final BluetoothSocket socket, final byte[] dataToSend, final Handler handler) {
 
         this.socket = socket;
-
+        this.handler = handler;
         OutputStream outStream = null;
         try {
             outStream = socket.getOutputStream();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
         this.outStream = outStream;
@@ -33,7 +35,14 @@ public class ConnectedThread extends Thread {
     public void run() {
         try {
             outStream.write(dataToSend);
-        } catch (IOException e) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    cancel();
+                }
+            }, 5000);
+
+        } catch (final IOException e) {
             e.printStackTrace();
         }
         GimBus.getInstance().post(new ConnectedEvent());
@@ -42,7 +51,8 @@ public class ConnectedThread extends Thread {
     public void cancel() {
         try {
             socket.close();
-        } catch (IOException e) {
+            outStream.close();
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }

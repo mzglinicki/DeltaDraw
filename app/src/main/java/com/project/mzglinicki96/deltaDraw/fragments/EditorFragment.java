@@ -3,7 +3,9 @@ package com.project.mzglinicki96.deltaDraw.fragments;
 import android.content.Context;
 import android.graphics.Point;
 import android.support.v7.widget.CardView;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.pgssoft.gimbus.Subscribe;
 import com.project.mzglinicki96.deltaDraw.Constants;
+import com.project.mzglinicki96.deltaDraw.FloatingColorMenuHelper;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
 import com.project.mzglinicki96.deltaDraw.eventBus.OnCreatePictureEvent;
@@ -53,12 +56,6 @@ public class EditorFragment extends FragmentParent {
     protected void init(final View view) {
         ButterKnife.bind(this, view);
         inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-    }
-
-    @OnClick(R.id.closeErrBtn)
-    public void onCloseErrorCardClick() {
-        errorCardView.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.editTextListOfPoints)
@@ -105,7 +102,11 @@ public class EditorFragment extends FragmentParent {
     private void showErrorView() {
         errorCardView.setVisibility(View.VISIBLE);
         final StringBuffer errorMassage = new StringBuffer();
-        errorMassage.append(getResources().getString(R.string.errors));
+        if (linesWithErrors.size() == 1){
+            errorMassage.append(getResources().getString(R.string.error));
+        }else {
+            errorMassage.append(getResources().getString(R.string.errors));
+        }
         for (final String lineWithError : linesWithErrors) {
             errorMassage.append(lineWithError).append("\n");
         }
@@ -116,21 +117,29 @@ public class EditorFragment extends FragmentParent {
 
         linesWithErrors = new ArrayList<>();
         final String codeByLines[] = pointsHolder.getText().toString().split("[\n]");
+        final Pattern linePattern = Pattern.compile("(\\D\\d+\\s\\d+\\D\\s\\d+)|(\\-\\d\\D\\s\\-\\d)");
 
         for (int i = 0; i < codeByLines.length - 1; i++) {
             final String line = codeByLines[i];
-            final Pattern pattern = Pattern.compile("(\\D\\d+\\s\\d+\\D\\s\\d+)|(\\-\\d\\D\\s\\-\\d)");
-            final Matcher matcher = pattern.matcher(line);
-            if (!matcher.matches()) {
+            final Matcher lineMatcher = linePattern.matcher(line);
+            if (!lineMatcher.matches()) {
                 linesWithErrors.add(line);
             }
         }
         return linesWithErrors.isEmpty();
     }
 
+    private void clearErrors() {
+        if (linesWithErrors != null && !linesWithErrors.isEmpty()) {
+            linesWithErrors.clear();
+        }
+        errorCardView.setVisibility(View.GONE);
+    }
+
     @Subscribe
     public void writeCode(final OnCreatePictureEvent event) {
 
+        clearErrors();
         int numOfPoint = NUM_OF_POINTS_INCREMENTATOR;
 
         StringBuffer coordinatesListToPrint = new StringBuffer();
