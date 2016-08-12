@@ -49,6 +49,8 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
     private ConnectThread connectThread;
     private BluetoothDeviceListAdapter devicesListAdapter;
     private boolean discovering = false;
+    private Point screenSizePoint;
+    private Point endOfFilePoint;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +80,10 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
 
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
-        coordinatesList.add(new Point(width, height));
+        screenSizePoint = new Point(width, height);
+        endOfFilePoint = new Point(-10, -10);
+        coordinatesList.add(screenSizePoint);
+        coordinatesList.add(endOfFilePoint);
         connect(position);
     }
 
@@ -88,7 +93,9 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
         final BluetoothDevice deviceToConnect = devices.get(position);
         connectThread = new ConnectThread(deviceToConnect, coordinatesList.toString().getBytes());
         connectThread.start();
-        coordinatesList.remove(coordinatesList.size() - 1);
+        coordinatesList.remove(screenSizePoint);
+        coordinatesList.remove(endOfFilePoint);
+//        coordinatesList.remove(coordinatesList.size() - 1);
     }
 
     @Override

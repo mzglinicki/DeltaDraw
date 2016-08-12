@@ -24,7 +24,7 @@
     <dimen name="listItemStartPadding">@dimen/designPadding</dimen>
     <dimen name="listItemEndPadding">@dimen/designPadding</dimen>
     <dimen name="endPaddingForDate">40dp</dimen>
-    <dimen name="splashHeaderMargin">30dp</dimen>
+    <dimen name="splashHeaderMargin">60dp</dimen>
     <dimen name="splashImageMargin">16dp</dimen>
 
     <dimen name="stroke_width">1dp</dimen>
@@ -41,6 +41,7 @@
     <dimen name="errorWindowWidth">200dp</dimen>
     <dimen name="errorWindowHeight">200dp</dimen>
     <dimen name="errorBtnHeight">24dp</dimen>
+    <dimen name="splashHeaderMarginBottom">30dp</dimen>
     <integer name="movement_loop_time">800</integer>
 
 </resources>

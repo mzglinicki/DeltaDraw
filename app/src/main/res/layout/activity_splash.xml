@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="@dimen/splashHeaderMargin"
+        android:layout_marginBottom="@dimen/splashHeaderMarginBottom"
         android:layout_marginEnd="@dimen/splashHeaderMargin"
         android:text="@string/splash_header"
         android:textColor="@color/lightTextColor"

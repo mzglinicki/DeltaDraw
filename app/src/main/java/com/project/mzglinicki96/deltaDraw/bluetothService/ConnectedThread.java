@@ -35,15 +35,10 @@ public class ConnectedThread extends Thread {
     public void run() {
         try {
             outStream.write(dataToSend);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    cancel();
-                }
-            }, 5000);
-
+            //TODO add eof
         } catch (final IOException e) {
             e.printStackTrace();
+            cancel();
         }
         GimBus.getInstance().post(new ConnectedEvent());
     }
