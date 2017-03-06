@@ -16,7 +16,7 @@ public class BluetoothViewHolder {
     @Bind(R.id.bluetoothTitleText)
     TextView bluetoothTitleText;
 
-    public BluetoothViewHolder(View convertView) {
+    public BluetoothViewHolder(final View convertView) {
         ButterKnife.bind(this, convertView);
     }
 

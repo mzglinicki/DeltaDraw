@@ -12,9 +12,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.pgssoft.gimbus.Subscribe;
 import com.project.mzglinicki96.deltaDraw.PointListHolder;
 import com.project.mzglinicki96.deltaDraw.R;
@@ -26,7 +26,6 @@ import com.project.mzglinicki96.deltaDraw.eventBus.GimBus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,9 +37,9 @@ import butterknife.OnClick;
 public class BluetoothConnectionActivity extends AppCompatActivity implements BluetoothDeviceListAdapter.ClickListener {
 
     @Bind(R.id.listViewOfDevices)
-    ListView listView;
+    protected ListView listView;
     @Bind(R.id.progress_view)
-    CircularProgressView progressView;
+    protected ProgressBar progressView;
 
     private static final int TURN_BT_ON_REQUEST_CODE = 1;
     private BluetoothAdapter bluetoothAdapter;
@@ -95,7 +94,6 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
         connectThread.start();
         coordinatesList.remove(screenSizePoint);
         coordinatesList.remove(endOfFilePoint);
-//        coordinatesList.remove(coordinatesList.size() - 1);
     }
 
     @Override
@@ -112,17 +110,19 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
         }
         try {
             connectThread.cancel();
-        } catch (NullPointerException threadIsNull) {
+        } catch (final NullPointerException threadIsNull) {
+            threadIsNull.printStackTrace();
         }
     }
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 
-        if (requestCode == TURN_BT_ON_REQUEST_CODE) {
-            devices = getListOfDevices();
-            setupBluetoothDevicesAdapter();
+        if (requestCode != TURN_BT_ON_REQUEST_CODE) {
+            return;
         }
+        devices = getListOfDevices();
+        setupBluetoothDevicesAdapter();
     }
 
     @OnClick(R.id.discoverButton)
@@ -137,15 +137,21 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
     }
 
     @Subscribe
-    public void onConnectedEvent(ConnectedEvent event) {
-        setProgressViewVisibility(false);
-        Toast.makeText(this, R.string.connected, Toast.LENGTH_SHORT).show();
+    @SuppressWarnings("unused")
+    public void onConnectedEvent(final ConnectedEvent event) {
+        onBluetoothConnectionEvent(false, R.string.connected);
+
     }
 
     @Subscribe
-    public void onUnconnectedEvent(@Nullable UnavailableConnectEvent event) {
-        setProgressViewVisibility(false);
-        Toast.makeText(this, R.string.device_unavailable, Toast.LENGTH_SHORT).show();
+    @SuppressWarnings("unused")
+    public void onUnconnectedEvent(@Nullable final UnavailableConnectEvent event) {
+        onBluetoothConnectionEvent(false, R.string.device_unavailable);
+    }
+
+    private void onBluetoothConnectionEvent(final boolean isProgressVisible, final int massageResId){
+        setProgressViewVisibility(isProgressVisible);
+        Toast.makeText(this, massageResId, Toast.LENGTH_SHORT).show();
     }
 
     private void setupBluetoothStateAndVisibility() {
@@ -155,6 +161,7 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
         if (bluetoothAdapter == null) {
             Toast.makeText(this, R.string.bt_not_support_toast, Toast.LENGTH_SHORT).show();
         }
+
         if (!bluetoothAdapter.isEnabled()) {
             final Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             startActivityForResult(turnOn, TURN_BT_ON_REQUEST_CODE);
@@ -166,15 +173,13 @@ public class BluetoothConnectionActivity extends AppCompatActivity implements Bl
 
     private List<BluetoothDevice> getListOfDevices() {
 
-        final Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         final List<BluetoothDevice> nameOfPairedDevices = new ArrayList<>();
-        nameOfPairedDevices.addAll(pairedDevices);
+        nameOfPairedDevices.addAll(bluetoothAdapter.getBondedDevices());
         return nameOfPairedDevices;
     }
 
     private void setupBluetoothDevicesAdapter() {
         devicesListAdapter = new BluetoothDeviceListAdapter(this, devices, this);
-        assert listView != null;
         listView.setAdapter(devicesListAdapter);
     }
 

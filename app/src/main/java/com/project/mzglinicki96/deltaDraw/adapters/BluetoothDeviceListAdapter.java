@@ -20,7 +20,7 @@ public class BluetoothDeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
     private final List<BluetoothDevice> listOfDevices;
     private final ClickListener clickListener;
 
-    public BluetoothDeviceListAdapter(final Context context, final List<BluetoothDevice> listOfDevices, ClickListener clickListener) {
+    public BluetoothDeviceListAdapter(final Context context, final List<BluetoothDevice> listOfDevices, final ClickListener clickListener) {
         super(context, -1, listOfDevices);
         this.listOfDevices = listOfDevices;
         this.clickListener = clickListener;

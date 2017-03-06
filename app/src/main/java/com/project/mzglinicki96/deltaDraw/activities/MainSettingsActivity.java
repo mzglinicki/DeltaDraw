@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.project.mzglinicki96.deltaDraw.FloatingColorMenuHelper;
@@ -34,16 +32,15 @@ import butterknife.ButterKnife;
 public class MainSettingsActivity extends AppCompatActivity implements SettingsAdapter.ClickListener {
 
     @Inject
-    DatabaseHelper databaseHelper;
+    protected DatabaseHelper databaseHelper;
     @Inject
-    SettingsManager settingsManager;
+    protected SettingsManager settingsManager;
     @Bind(R.id.settingsListRecycleView)
-    RecyclerView recyclerView;
+    protected RecyclerView recyclerView;
 
     private SettingsAdapter adapter;
     private List<SettingModel> settingModels;
     private SharedPreferences sharedPreferences;
-    private AlertDialog buttonColor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,8 +65,7 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
 
     @Override
     public void onBackPressed() {
-        final Intent intent = new Intent(this, DatabaseActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, DatabaseActivity.class));
         overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
         finish();
     }
@@ -130,7 +126,9 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
     }
 
     private void clearSharedPreferences() {
-        sharedPreferences.edit().clear().apply();
+        sharedPreferences.edit()
+                .clear()
+                .apply();
         settingModels.get(SettingsHelper.COLOR_MENU_VISIBILITY.ordinal()).setMarked();
         adapter.update();
         Toast.makeText(this, R.string.setDefaultSetting, Toast.LENGTH_SHORT).show();
@@ -151,9 +149,5 @@ public class MainSettingsActivity extends AppCompatActivity implements SettingsA
                 .setNegativeButton(R.string.no_btn, null)
                 .create()
                 .show();
-    }
-
-    public void setButtonColor(AlertDialog buttonColor) {
-        this.buttonColor = buttonColor;
     }
 }

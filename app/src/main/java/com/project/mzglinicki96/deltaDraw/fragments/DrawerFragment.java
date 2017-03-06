@@ -114,7 +114,6 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
                 if (!event.getResult()) {
                     showTurnOffMenuDialog(v, menuButton, owner);
                 }
-                break;
             default:
                 break;
         }
@@ -324,16 +323,17 @@ public class DrawerFragment extends FragmentParent implements View.OnDragListene
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void closeMenu(@Nullable CloseMenuEvent event) {
         actionMenu.close(true);
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void redrawCanvas(final OnCreatePictureEvent listOfPoints) {
         if (getView() == null) {
             return;
         }
-        drawer = (DrawerOnScreen) getView().findViewById(R.id.canvas);
         drawer.redrawCanvas(listOfPoints);
     }
 }

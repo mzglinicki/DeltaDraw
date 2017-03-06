@@ -43,10 +43,12 @@ public class PictureListRecycleAdapter extends RecyclerView.Adapter<PictureListV
     }
 
     private void setOnClickListener(final PictureListViewHolder holder, final PictureModel model) {
+
+
         holder.getRecord().setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 if (clickListener != null) {
                     clickListener.onClick(holder.getAdapterPosition());
                 }
@@ -54,7 +56,7 @@ public class PictureListRecycleAdapter extends RecyclerView.Adapter<PictureListV
         });
         holder.getRecord().setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public boolean onLongClick(final View v) {
                 if (clickListener != null) {
                     clickListener.onLongClick(v, model, holder);
                 }

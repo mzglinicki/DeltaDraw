@@ -1,16 +1,10 @@
 package com.project.mzglinicki96.deltaDraw.activities;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,14 +13,13 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.mzglinicki96.deltaDraw.DialogActionListener;
+import com.project.mzglinicki96.deltaDraw.DialogWindow;
 import com.project.mzglinicki96.deltaDraw.R;
 import com.project.mzglinicki96.deltaDraw.adapters.PictureListRecycleAdapter;
 import com.project.mzglinicki96.deltaDraw.adapters.PictureListTouchHelper;
@@ -43,15 +36,22 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.view.View.GONE;
+import static android.view.View.OnClickListener;
+import static android.view.View.VISIBLE;
+import static android.widget.Toast.LENGTH_SHORT;
+
 /**
  * Created by mzglinicki.96 on 27.03.2016.
  */
 public class DatabaseActivity extends AppCompatActivity implements PictureListRecycleAdapter.ClickListener, SearchView.OnQueryTextListener {
 
     @Inject
-    DatabaseHelper databaseHelper;
+    protected DatabaseHelper databaseHelper;
     @Bind(R.id.recycleView)
-    RecyclerView recyclerView;
+    protected RecyclerView recyclerView;
+    @Bind(R.id.emptyListMessage)
+    protected TextView emptyListMessage;
 
     private boolean editing = false;
     private PictureListRecycleAdapter adapter;
@@ -63,14 +63,25 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         super.onCreate(savedInstanceState);
 
         ((MyApplication) getApplication()).getComponent().inject(this);
+        setContentView(R.layout.activity_database);
+        ButterKnife.bind(this);
+
         createNewScreen();
+    }
+
+    private void createNewScreen() {
+
+        pictureModels = databaseHelper.getPicturesData();
+        adapter = new PictureListRecycleAdapter(this, pictureModels);
+        adapter.setClickListener(this);
+        handleEmptyAdapter();
+        setupRecyclerView();
+        new ItemTouchHelper(new PictureListTouchHelper(adapter)).attachToRecyclerView(recyclerView);
     }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        final MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.lib_menu, menu);
+        getMenuInflater().inflate(R.menu.lib_menu, menu);
 
         final MenuItem item = menu.findItem(R.id.lib_menu_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
@@ -95,8 +106,6 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
 
     @Override
     public void onClick(int position) {
-
-
         startActivity(DrawCreatingActivity.class, databaseHelper.getDataFromRow(position));
     }
 
@@ -104,10 +113,9 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
     public void onLongClick(final View view, final PictureModel model, final PictureListViewHolder holder) {
 
         if (editing) {
-            Toast.makeText(this, R.string.acceptPreviousChanges, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.acceptPreviousChanges, LENGTH_SHORT).show();
         } else {
-            editing = true;
-            changeVisibility(holder.getListViewItems());
+            onRecordEdit(true, holder.getListViewItems());
             holder.getPictureTitleEditField().setText(holder.getPictureTitleField().getText().toString());
             holder.getPictureAuthorEditField().setText(holder.getAuthorField().getText().toString());
             onAcceptChangesClick(model, holder);
@@ -118,30 +126,27 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
     @Override
     public void onDeleteItem(final PictureModel model, final int position) {
 
-        final Snackbar snackbar = Snackbar
-                .make(recyclerView, R.string.deleted_snackbar, Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo, new View.OnClickListener() {
+        Snackbar.make(recyclerView, R.string.deleted_snackbar, Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, new OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(final View view) {
                         onUndoClick(model, position);
                     }
                 })
-                .setCallback(new Snackbar.Callback() {
+                .addCallback(new Snackbar.Callback() {
                     @Override
-                    public void onDismissed(Snackbar snackbar, int event) {
-                        super.onDismissed(snackbar, event);
+                    public void onDismissed(final Snackbar snackbar, final int event) {
                         if (!pictureToRemove.isEmpty()) {
                             databaseHelper.deleteRecord(pictureToRemove.get(0).getId());
                         }
                         pictureToRemove.remove(model);
                     }
-                });
-        snackbar.show();
+                }).show();
 
         pictureModels.remove(position);
         adapter.notifyItemRemoved(position);
         pictureToRemove.add(model);
-        checkIfAdapterIsEmpty();
+        handleEmptyAdapter();
     }
 
     @Override
@@ -158,29 +163,41 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
 
     @Override
     public void onBackPressed() {
-        closeApplication();
+        new DialogWindow(this, R.string.close_app_dialog, R.string.yes_btn, R.string.no_btn, null, true, new DialogActionListener() {
+            @Override
+            public void onPositiveBtnClick() {
+                System.exit(0);
+            }
+        });
     }
 
     @OnClick(R.id.floatingButton)
     public void onFABClick() {
-        showFloatingBtnAlert(getString(R.string.start_draw_title), DatabaseActivity.this);
+
+        final View view = LayoutInflater.from(this).inflate(R.layout.new_picture_dialog, null);
+        new DialogWindow(this, R.string.start_draw_title, R.string.start_draw_btn, R.string.cancel, view, false, new DialogActionListener() {
+            @Override
+            public void onPositiveBtnClick() {
+                startDraw(view);
+            }
+        });
     }
 
     public boolean onAcceptChangesClick(final PictureModel model, final PictureListViewHolder holder) {
 
-        holder.getAcceptChangesImageBtn().setOnClickListener(new View.OnClickListener() {
+        holder.getAcceptChangesImageBtn().setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 final String newTitle = holder.getPictureTitleEditField().getText().toString();
                 final String newAuthor = holder.getPictureAuthorEditField().getText().toString();
-                if (!newTitle.isEmpty() && !newAuthor.isEmpty()) {
-                    databaseHelper.updateAllData(newTitle, newAuthor, model.getPoints(), model.getId());
-                    model.setName(newTitle);
-                    model.setAuthor(newAuthor);
-                    adapter.notifyDataSetChanged();
-                    changeVisibility(holder.getListViewItems());
-                    editing = false;
+                if (newTitle.isEmpty() || newAuthor.isEmpty()) {
+                    return;
                 }
+                databaseHelper.updateAllData(newTitle, newAuthor, model.getPoints(), model.getId());
+                model.setName(newTitle);
+                model.setAuthor(newAuthor);
+                adapter.notifyDataSetChanged();
+                onRecordEdit(false, holder.getListViewItems());
             }
         });
         return true;
@@ -188,19 +205,20 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
 
     public boolean onCancelClick(final PictureListViewHolder holder) {
 
-        holder.getCancelChangesImageBtn().setOnClickListener(new View.OnClickListener() {
+        holder.getCancelChangesImageBtn().setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                changeVisibility(holder.getListViewItems());
-                editing = false;
+            public void onClick(final View v) {
+                onRecordEdit(false, holder.getListViewItems());
             }
         });
         return true;
     }
 
-    private void changeVisibility(final List<View> listViewItems) {
-        for (final View item : listViewItems) {
-            item.setVisibility(item.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+    private void onRecordEdit(final boolean isRecordEditing, final List<View> databaseRecords) {
+        editing = isRecordEditing;
+
+        for (final View item : databaseRecords) {
+            item.setVisibility(item.getVisibility() == VISIBLE ? GONE : VISIBLE);
         }
     }
 
@@ -209,30 +227,14 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         adapter.notifyItemInserted(position);
         recyclerView.scrollToPosition(position);
         pictureToRemove.remove(model);
-        checkIfAdapterIsEmpty();
+        handleEmptyAdapter();
     }
 
-    private void createNewScreen() {
-        setContentView(R.layout.activity_database);
-        ButterKnife.bind(this);
-        pictureModels = databaseHelper.getPicturesData();
-        adapter = new PictureListRecycleAdapter(this, pictureModels);
-        adapter.setClickListener(this);
-
-        checkIfAdapterIsEmpty();
-        setupRecyclerView();
-        createItemTouchHelper();
-    }
-
-    private void checkIfAdapterIsEmpty() {
-        final TextView emptyListMessage = (TextView) findViewById(R.id.emptyListMessage);
-        assert emptyListMessage != null;
-        emptyListMessage.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+    private void handleEmptyAdapter() {
+        emptyListMessage.setVisibility(adapter.getItemCount() == 0 ? VISIBLE : GONE);
     }
 
     private void setupRecyclerView() {
-
-        assert recyclerView != null;
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -254,7 +256,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         query = query.toLowerCase();
 
         final List<PictureModel> filteredModelList = new ArrayList<>();
-        for (PictureModel model : models) {
+        for (final PictureModel model : models) {
             final String pictureName = model.getName().toLowerCase();
             final String pictureAuthor = model.getAuthor().toLowerCase();
             final String createDate = model.getDate().toLowerCase();
@@ -265,48 +267,8 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
         return filteredModelList;
     }
 
-    private void createItemTouchHelper() {
-        final PictureListTouchHelper callback = new PictureListTouchHelper(adapter);
-        final ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
-    }
-
-    private void closeApplication() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage(getString(R.string.close_app_dialog))
-                .setPositiveButton(R.string.yes_btn, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        System.exit(0);
-                    }
-                })
-                .setNegativeButton(R.string.no_btn, null)
-                .create()
-                .show();
-    }
-
-    private void showFloatingBtnAlert(final String message, final Context context) {
-
-        final View view = LayoutInflater.from(context).inflate(R.layout.new_picture_dialog, null);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        builder.setMessage(message)
-                .setView(view)
-                .setPositiveButton(R.string.start_draw_btn, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startDraw(view);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .setCancelable(false)
-                .create()
-                .show();
-    }
-
     private void startDraw(final View view) {
+
         final AppCompatEditText pictureTitle = (AppCompatEditText) view.findViewById(R.id.textPictureTitle);
         final AppCompatEditText pictureAuthor = (AppCompatEditText) view.findViewById(R.id.textAuthor);
         final String name = pictureTitle.getText().toString();
@@ -316,7 +278,7 @@ public class DatabaseActivity extends AppCompatActivity implements PictureListRe
             databaseHelper.insertData(name, author, null);
             startActivity(DrawCreatingActivity.class, databaseHelper.getLastSavedRow());
         } else {
-            Toast.makeText(this, R.string.uncompletedData, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.uncompletedData, LENGTH_SHORT).show();
         }
     }
 }

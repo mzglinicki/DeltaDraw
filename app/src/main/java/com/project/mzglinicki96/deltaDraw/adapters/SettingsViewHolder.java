@@ -16,9 +16,9 @@ import butterknife.ButterKnife;
 public class SettingsViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.settingTitleText)
-    TextView settingTitle;
+    protected TextView settingTitle;
     @Bind(R.id.settingCheckbox)
-    CheckBox checkBox;
+    protected CheckBox checkBox;
 
     public SettingsViewHolder(final View itemView) {
         super(itemView);

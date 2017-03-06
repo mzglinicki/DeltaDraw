@@ -20,23 +20,23 @@ import butterknife.ButterKnife;
 public class PictureListViewHolder extends RecyclerView.ViewHolder {
 
     @Bind(R.id.pictureTitleField)
-    TextView pictureTitleField;
+    protected TextView pictureTitleField;
     @Bind(R.id.pictureAuthorField)
-    TextView pictureAuthorField;
+    protected TextView pictureAuthorField;
     @Bind(R.id.pictureDateField)
-    TextView pictureDateField;
+    protected TextView pictureDateField;
     @Bind(R.id.pictureTitleEditField)
-    EditText pictureTitleEditField;
+    protected EditText pictureTitleEditField;
     @Bind(R.id.pictureAuthorEditField)
-    EditText pictureAuthorEditField;
+    protected EditText pictureAuthorEditField;
     @Bind(R.id.acceptChangesImageBtn)
-    ImageButton acceptChangesImageBtn;
+    protected ImageButton acceptChangesImageBtn;
     @Bind(R.id.cancelChangesImageBtn)
-    ImageButton cancelChangesImageBtn;
+    protected ImageButton cancelChangesImageBtn;
     @Bind(R.id.record)
-    RelativeLayout record;
+    protected RelativeLayout record;
     @Bind({R.id.pictureTitleEditField, R.id.pictureAuthorEditField, R.id.acceptChangesImageBtn, R.id.cancelChangesImageBtn, R.id.pictureTitleField, R.id.pictureAuthorField, R.id.pictureDateField})
-    List<View> listViewItems;
+    protected List<View> listViewItems;
 
     public PictureListViewHolder(final View itemView) {
         super(itemView);

@@ -87,7 +87,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         bundle.putString(Constants.KEY_NAME, pictureName);
         bundle.putString(Constants.KEY_AUTHOR, pictureAuthor);
         bundle.putInt(Constants.KEY_POSITION, pictureId);
-
         return bundle;
     }
 
@@ -115,35 +114,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteAllData() {
-        final SQLiteDatabase db = getWritableDatabase();
-        db.delete(PictureTable.TABLE_NAME, null, null);
+        getWritableDatabase().delete(PictureTable.TABLE_NAME, null, null);
     }
 
     public void deleteRecord(final int rowId) {
-        final SQLiteDatabase db = getWritableDatabase();
-        db.delete(PictureTable.TABLE_NAME, PictureTable.COLUMN_ID + "=" + rowId, null);
+        getWritableDatabase().delete(PictureTable.TABLE_NAME, PictureTable.COLUMN_ID + "=" + rowId, null);
     }
 
     public List<PictureModel> getPicturesData() {
 
-        List<PictureModel> pictureModelList = new ArrayList<>();
+        final List<PictureModel> pictureModelList = new ArrayList<>();
 
         final Cursor result = getAllData();
 
         while (result.moveToNext()) {
-            final int id = result.getInt(result.getColumnIndexOrThrow(PictureTable.COLUMN_ID));
-            final String name = result.getString(result.getColumnIndexOrThrow(PictureTable.COLUMN_NAME));
-            final String author = result.getString(result.getColumnIndexOrThrow(PictureTable.COLUMN_AUTHOR));
-            final String points = result.getString(result.getColumnIndexOrThrow(PictureTable.COLUMN_POINTS));
-            final String date = result.getString(result.getColumnIndexOrThrow(PictureTable.COLUMN_DATE));
-
             final PictureModel pictureModel = new PictureModel();
 
-            pictureModel.setId(id);
-            pictureModel.setName(name);
-            pictureModel.setAuthor(author);
-            pictureModel.setPoints(points);
-            pictureModel.setDate(date);
+            pictureModel.setId(result.getInt(result.getColumnIndexOrThrow(PictureTable.COLUMN_ID)));
+            pictureModel.setName(result.getString(result.getColumnIndexOrThrow(PictureTable.COLUMN_NAME)));
+            pictureModel.setAuthor(result.getString(result.getColumnIndexOrThrow(PictureTable.COLUMN_AUTHOR)));
+            pictureModel.setPoints(result.getString(result.getColumnIndexOrThrow(PictureTable.COLUMN_POINTS)));
+            pictureModel.setDate(result.getString(result.getColumnIndexOrThrow(PictureTable.COLUMN_DATE)));
             pictureModelList.add(pictureModel);
         }
         result.close();
@@ -151,8 +142,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private String getDate() {
-        final Calendar calendar = Calendar.getInstance();
         final SimpleDateFormat formatter = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
-        return formatter.format(calendar.getTime());
+        return formatter.format(Calendar.getInstance().getTime());
     }
 }

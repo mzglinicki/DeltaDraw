@@ -17,8 +17,6 @@
         android:id="@+id/fabMenuContainer"
         android:layout_width="@dimen/menuColorContainer"
         android:layout_height="@dimen/menuColorContainer"
-        android:layout_gravity="bottom|end">
-
-    </RelativeLayout>
+        android:layout_gravity="bottom|end" />
 
 </FrameLayout>

@@ -43,7 +43,7 @@ public class PictureLoaderSupport extends AsyncTask<String, Void, List<Point>> {
     }
 
     @Override
-    protected void onPostExecute(List<Point> points) {
+    protected void onPostExecute(final List<Point> points) {
         super.onPostExecute(points);
         listener.onLoadListComplete(points);
     }

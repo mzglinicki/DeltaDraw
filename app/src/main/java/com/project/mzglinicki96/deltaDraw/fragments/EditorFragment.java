@@ -34,13 +34,13 @@ import butterknife.OnClick;
 public class EditorFragment extends FragmentParent {
 
     @Bind(R.id.editTextListOfPoints)
-    EditText pointsHolder;
+    protected EditText pointsHolder;
     @Bind(R.id.editCodeAcceptor)
-    Button editCodeAcceptor;
+    protected Button editCodeAcceptor;
     @Bind(R.id.errorCardView)
-    CardView errorCardView;
+    protected CardView errorCardView;
     @Bind(R.id.errorTextView)
-    TextView errorTextView;
+    protected TextView errorTextView;
 
     private static final int NUM_OF_POINTS_INCREMENTATOR = 10;
     private List<String> linesWithErrors;
@@ -60,9 +60,10 @@ public class EditorFragment extends FragmentParent {
 
     @OnClick(R.id.editTextListOfPoints)
     public void onCodeEditTextClick() {
-        if (inputManager.isActive()) {
-            errorCardView.setVisibility(View.GONE);
+        if (!inputManager.isActive()) {
+            return;
         }
+        errorCardView.setVisibility(View.GONE);
     }
 
     @Override
@@ -137,6 +138,7 @@ public class EditorFragment extends FragmentParent {
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void writeCode(final OnCreatePictureEvent event) {
 
         clearErrors();

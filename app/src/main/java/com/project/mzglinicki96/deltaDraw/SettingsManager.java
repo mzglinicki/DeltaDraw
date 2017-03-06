@@ -12,6 +12,8 @@ import javax.inject.Singleton;
 
 import butterknife.BindString;
 
+import static com.project.mzglinicki96.deltaDraw.SettingsHelper.*;
+
 /**
  * Created by mzglinicki.96 on 10.07.2016.
  */
@@ -37,19 +39,17 @@ public class SettingsManager {
         boolean isMenuColorVisible = sharedPreferences.getBoolean(Constants.COLOR_MENU_VISIBILITY, true);
 
         settingModels = new ArrayList<>();
-        settingModels.add(new SettingModel(SettingsHelper.DELETE_ALL.ordinal(), getSettingTitle(R.string.settings_delete_all), false, false));
-        settingModels.add(new SettingModel(SettingsHelper.COLORS_AMOUNT.ordinal(), getSettingTitle(R.string.setting_select_color_title), false, false));
-        settingModels.add(new SettingModel(SettingsHelper.COLOR_MENU_VISIBILITY.ordinal(), getSettingTitle(R.string.menu_color_visibility), true, isMenuColorVisible));
-        settingModels.add(new SettingModel(SettingsHelper.DEFAULT_SETTINGS.ordinal(), getSettingTitle(R.string.default_settings), false, false));
+        settingModels.add(new SettingModel(DELETE_ALL.ordinal(), R.string.settings_delete_all, false, false));
+        settingModels.add(new SettingModel(COLORS_AMOUNT.ordinal(), R.string.setting_select_color_title, false, false));
+        settingModels.add(new SettingModel(COLOR_MENU_VISIBILITY.ordinal(), R.string.menu_color_visibility, true, isMenuColorVisible));
+        settingModels.add(new SettingModel(DEFAULT_SETTINGS.ordinal(), R.string.default_settings, false, false));
         return settingModels;
     }
 
-    public void toggleCheckBoxMarked(SettingModel settingModel) {
+    public void toggleCheckBoxMarked(final SettingModel settingModel) {
         boolean mark = settingModels.get(settingModel.getSettingId()).toggleMark();
-        sharedPreferences.edit().putBoolean(Constants.COLOR_MENU_VISIBILITY, mark).apply();
-    }
-
-    private String getSettingTitle(int stringId) {
-        return MyApplication.getContext().getResources().getString(stringId);
+        sharedPreferences.edit()
+                .putBoolean(Constants.COLOR_MENU_VISIBILITY, mark)
+                .apply();
     }
 }

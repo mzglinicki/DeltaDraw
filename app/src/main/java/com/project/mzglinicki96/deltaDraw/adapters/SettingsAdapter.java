@@ -40,7 +40,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsViewHolder> {
         final SettingModel settingModel = settingModels.get(position);
 
         final TextView settingTitle = holder.getSettingTitle();
-        settingTitle.setText(settingModel.getSettingTitle());
+        settingTitle.setText(settingModel.getSettingTitleResId());
         settingTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +68,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsViewHolder> {
     }
 
     public void update() {
-        for (SettingModel settingModel : settingModels) {
+        for (final SettingModel settingModel : settingModels) {
             settingModel.setMarked();
         }
         this.notifyDataSetChanged();

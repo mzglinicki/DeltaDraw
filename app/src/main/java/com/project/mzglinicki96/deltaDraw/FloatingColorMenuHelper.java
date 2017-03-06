@@ -71,7 +71,7 @@ public enum FloatingColorMenuHelper {
     }
 
     public ImageView createImageView(final Context context, final int drawableId) {
-        ImageView imageView = new ImageView(context);
+        final ImageView imageView = new ImageView(context);
         imageView.setImageResource(drawableId);
         return imageView;
     }

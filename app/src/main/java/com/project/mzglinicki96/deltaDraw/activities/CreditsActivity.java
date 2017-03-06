@@ -20,8 +20,7 @@ public class CreditsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        final Intent intent = new Intent(CreditsActivity.this, DatabaseActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(CreditsActivity.this, DatabaseActivity.class));
         overridePendingTransition(R.animator.trans_right_in, R.animator.trans_right_out);
         finish();
     }

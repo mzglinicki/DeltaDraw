@@ -8,8 +8,7 @@
     <ListView
         android:id="@+id/listViewOfDevices"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/discoverButton"
@@ -17,13 +16,12 @@
         android:layout_alignParentBottom="true"
         android:text="@string/discover_new_devices" />
 
-    <com.github.rahatarmanahmed.cpv.CircularProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ProgressBar
         android:id="@+id/progress_view"
         android:layout_width="@dimen/progressCircle"
         android:layout_height="@dimen/progressCircle"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        app:cpv_animAutostart="true"
-        app:cpv_indeterminate="true" />
+        android:visibility="visible" />
 
 </RelativeLayout>

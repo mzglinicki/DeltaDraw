@@ -5,14 +5,14 @@ package com.project.mzglinicki96.deltaDraw;
  */
 public class SettingModel {
 
-    private final String settingTitle;
+    private final int settingTitleResId;
     private final int settingId;
     private final boolean checkBoxVisibility;
     private boolean mark;
 
-    public SettingModel(final int settingId, final String settingTitle, final boolean isCheckBoxVisible, final boolean mark) {
+    public SettingModel(final int settingId, final int settingTitle, final boolean isCheckBoxVisible, final boolean mark) {
         this.settingId = settingId;
-        this.settingTitle = settingTitle;
+        this.settingTitleResId = settingTitle;
         this.checkBoxVisibility = isCheckBoxVisible;
         this.mark = mark;
     }
@@ -21,8 +21,8 @@ public class SettingModel {
         return settingId;
     }
 
-    public String getSettingTitle() {
-        return settingTitle;
+    public int getSettingTitleResId() {
+        return settingTitleResId;
     }
 
     public boolean isCheckBoxEnable() {

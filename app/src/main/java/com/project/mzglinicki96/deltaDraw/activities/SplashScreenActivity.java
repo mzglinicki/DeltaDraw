@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 public class SplashScreenActivity extends AppCompatActivity {
 
     @Bind(R.id.determinate)
-    DeterminateRoadRunner determinateRoadRunner;
+    protected DeterminateRoadRunner determinateRoadRunner;
 
     private static final int SPLASH_TIME_OUT = 3000;
 
@@ -34,8 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 determinateRoadRunner.setVisibility(View.INVISIBLE);
-                final Intent intent = new Intent(SplashScreenActivity.this, DatabaseActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(SplashScreenActivity.this, DatabaseActivity.class));
                 overridePendingTransition(R.animator.trans_left_in, R.animator.trans_left_out);
                 finish();
             }

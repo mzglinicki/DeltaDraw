@@ -118,13 +118,14 @@ public class DrawerOnScreen extends View {
         int color = 0;
 
         for (final FloatingColorMenuHelper floatingColorMenuHelper : FloatingColorMenuHelper.values()) {
-            if (floatingColorMenuHelper.getColorIndicator() == colorIndicator) {
-                color = floatingColorMenuHelper.getColor();
-                if (fabIcon != null) {
-                    setBrushColor(color);
-                }
-                break;
+            if (floatingColorMenuHelper.getColorIndicator() != colorIndicator) {
+                continue;
             }
+            color = floatingColorMenuHelper.getColor();
+            if (fabIcon != null) {
+                setBrushColor(color);
+            }
+            break;
         }
         return color;
     }
@@ -233,7 +234,7 @@ public class DrawerOnScreen extends View {
         }
     }
 
-    public void setBrushColor(int color) {
+    public void setBrushColor(final int color) {
         final VectorDrawableCompat drawableCompat = VectorDrawableCompat.create(getResources(), R.drawable.ic_brush_24dp, getContext().getTheme());
         assert drawableCompat != null;
         drawableCompat.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);

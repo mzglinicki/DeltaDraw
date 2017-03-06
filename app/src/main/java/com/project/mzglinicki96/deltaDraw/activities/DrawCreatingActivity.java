@@ -5,13 +5,10 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.pgssoft.gimbus.Subscribe;
@@ -43,11 +40,11 @@ import butterknife.ButterKnife;
 public class DrawCreatingActivity extends AppCompatActivity {
 
     @Inject
-    DatabaseHelper databaseHelper;
+    protected DatabaseHelper databaseHelper;
     @Bind(R.id.viewpager)
-    CustomViewPager viewPager;
+    protected CustomViewPager viewPager;
     @Bind(R.id.sliding_tabs)
-    TabLayout tabLayout;
+    protected TabLayout tabLayout;
 
     private List<Point> coordinatesList;
     private List<Point> initialList = new ArrayList<>();
@@ -74,9 +71,7 @@ public class DrawCreatingActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        final MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -102,7 +97,11 @@ public class DrawCreatingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        checkChanges();
+        if (initialList.equals(coordinatesList)) {
+            startActivity(DatabaseActivity.class);
+        } else {
+            askForSaving();
+        }
     }
 
     @Override
@@ -120,9 +119,8 @@ public class DrawCreatingActivity extends AppCompatActivity {
     private void getPicture() {
 
         final PictureLoaderSupport pictureLoaderSupport = new PictureLoaderSupport(new PictureLoaderSupport.OnCompleteListener() {
-
             @Override
-            public void onLoadListComplete(List<Point> coordinates) {
+            public void onLoadListComplete(final List<Point> coordinates) {
                 initialList.addAll(coordinates);
                 GimBus.getInstance().post(new OnCreatePictureEvent(coordinates));
             }
@@ -132,29 +130,17 @@ public class DrawCreatingActivity extends AppCompatActivity {
 
     private void startActivity(final Class newActivity) {
 
-        final Intent intent = new Intent(DrawCreatingActivity.this, newActivity);
+        startActivity(new Intent(DrawCreatingActivity.this, newActivity));
         boolean isDatabaseActivity = newActivity.equals(DatabaseActivity.class);
-        startActivity(intent);
         if (isDatabaseActivity) {
             finish();
         }
         overridePendingTransition(isDatabaseActivity ? R.animator.trans_right_in : R.animator.trans_left_in, isDatabaseActivity ? R.animator.trans_right_out : R.animator.trans_left_out);
     }
 
-    private void checkChanges() {
-
-        if (initialList.equals(coordinatesList)) {
-            startActivity(DatabaseActivity.class);
-        } else {
-            askForSaving();
-        }
-    }
-
     private void askForSaving() {
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage(getString(R.string.ask_for_save_changes))
+        new AlertDialog.Builder(this).setMessage(getString(R.string.ask_for_save_changes))
                 .setPositiveButton(R.string.yes_btn, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -174,14 +160,12 @@ public class DrawCreatingActivity extends AppCompatActivity {
 
     private void clear() {
         final DrawerOnScreen drawer = (DrawerOnScreen) findViewById(R.id.canvas);
-        assert drawer != null;
         drawer.clearAll();
         GimBus.getInstance().post(new OnCreatePictureEvent(coordinatesList));
     }
 
     private void clearLastShape() {
         final DrawerOnScreen drawer = (DrawerOnScreen) findViewById(R.id.canvas);
-        assert drawer != null;
         drawer.clearLastShape();
         GimBus.getInstance().post(new OnCreatePictureEvent(coordinatesList));
     }
@@ -214,7 +198,8 @@ public class DrawCreatingActivity extends AppCompatActivity {
         rowId = bundle.getInt(Constants.KEY_POSITION);
         try {
             listInJason = bundle.getString(Constants.POINTS_IN_JASON);
-        } catch (NullPointerException ignored) {
+        } catch (final NullPointerException ignored) {
+            ignored.printStackTrace();
         }
         return bundle;
     }
@@ -231,6 +216,7 @@ public class DrawCreatingActivity extends AppCompatActivity {
     }
 
     @Subscribe
+    @SuppressWarnings("unused")
     public void listOfPointsHolder(final OnCreatePictureEvent list) {
         this.coordinatesList = list.getCoordinatesList();
     }

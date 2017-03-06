@@ -15,7 +15,7 @@ public class OnCreatePictureEvent {
     public OnCreatePictureEvent() {
     }
 
-    public OnCreatePictureEvent(List<Point> coordinatesList) {
+    public OnCreatePictureEvent(final List<Point> coordinatesList) {
         this.coordinatesList = coordinatesList;
     }
 
