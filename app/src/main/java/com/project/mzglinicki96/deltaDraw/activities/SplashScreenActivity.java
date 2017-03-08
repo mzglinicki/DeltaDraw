@@ -7,8 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.project.mzglinicki96.deltaDraw.R;
 import com.github.glomadrian.roadrunner.DeterminateRoadRunner;
+import com.project.mzglinicki96.deltaDraw.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
